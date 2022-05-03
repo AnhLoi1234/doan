@@ -11,11 +11,11 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>Admin Login</h1>
+        <h1> ADMIN ĐĂNG NHẬP</h1>
     </div>
 	<div class="screen">
 		<div class="screen__content">
-			<form class="login">
+			<form class="login" method="post">
 				<div class="login__field">
 					
 					<input type="text" class="login__input" placeholder="Tên đăng nhập ">
@@ -27,8 +27,8 @@
                 <div class="input_passwork">
                     <input type="checkbox">Nhớ mật khẩu
                 </div>
-				<button class="button login__submit">
-					<span class="button__text">Log In Now</span>
+				<button class="button login__submit" type="submit">
+					<span class="button__text">ĐĂNG NHẬP</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>				
 			</form>

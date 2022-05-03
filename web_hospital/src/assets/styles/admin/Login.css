@@ -6,6 +6,7 @@
 	min-height: 100vh;
     flex-direction: column;
     gap: 10px;
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);	
 }
 
 .header h1{

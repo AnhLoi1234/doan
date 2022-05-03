@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// admin
 Route::get('/', function () {
-    return view('welcome');
+    return view('Admin/Admin_login');
 });
+// Route::get('/dashboard','Admin\C_Admin_login@Admin_login' );
