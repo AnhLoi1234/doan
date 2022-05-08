@@ -1,4 +1,78 @@
+<template>
 
+<div class="container">
+	<Loading v-if="loading"></Loading>
+    <div class="header">
+        <h1> ĐĂNG NHẬP TRANG QUẢN LÝ</h1>
+    </div>
+	<div class="screen">
+		<div class="screen__content">
+			<form class="login" method="post" @submit.prevent="login()">
+				<p class="error_login">{{status}}</p>
+				<div class="login__field">
+					
+					<input type="text" class="login__input" v-model="account.username" placeholder="Tên đăng nhập ">
+				</div>
+				<div class="login__field">
+					
+					<input type="password" v-model="account.password" class="login__input" placeholder="Mật khẩu">
+				</div>
+                <div class="input_passwork">
+                    <input type="checkbox">Nhớ mật khẩu
+                </div>
+				<button class="button login__submit" type="submit">
+					<span class="button__text">ĐĂNG NHẬP</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</button>				
+			</form>
+			<div class="social-login">
+				
+			</div>
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+</div>
+</template>
+<script>
+import Request from '@/Request';
+import Loading from '@/components/Loading';
+export default {
+	data() {
+		return {
+			loading:false,
+			account:{
+				username:'',
+				password:'',
+			},
+			status:''
+		}
+	},
+	components:{
+		Loading
+	},
+	methods:{
+		login:function(){
+			this.loading = true;
+			Request.login('/admin-login',this.account)
+			.then(response => {
+				window.localStorage.setItem('token', response.data.token);
+				this.$router.push({name:'manage'})
+				this.loading = false;
+			})
+			.catch(() => {
+				this.status = 'Sai tên đăng nhập hoặc mật khẩu!'
+				this.loading = false;
+			})
+		},
+	}
+}
+</script>
+<style scoped>
 .container {
 	display: flex;
 	align-items: center;
@@ -6,7 +80,8 @@
 	min-height: 100vh;
     flex-direction: column;
     gap: 10px;
-    background: linear-gradient(90deg, #C7C5F4, #776BCC);	
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);
+    font-family: Raleway, sans-serif;	
 }
 
 .header h1{
@@ -188,3 +263,9 @@
 .input_passwork{
     margin-top:20px
 }
+
+.error_login{
+	color: red;
+	font-weight: bold;
+}
+</style>

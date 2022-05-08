@@ -13,7 +13,7 @@ class Rq_Admin_login extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class Rq_Admin_login extends FormRequest
     public function rules()
     {
         return [
-            //
+            'username'=>'required',
+            'password'=>'required'
         ];
     }
 }

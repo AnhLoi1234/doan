@@ -1,4 +1,4 @@
-# web_hospital
+# web_hospitall
 
 ## Project setup
 ```

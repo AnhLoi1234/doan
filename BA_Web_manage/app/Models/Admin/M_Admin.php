@@ -11,9 +11,7 @@ class M_Admin extends Authenticatable
 {
     use HasApiTokens,Notifiable;
     
-    protected $filltable = [
-        'name','username','password',
-    ];
+    protected $guarded = [];  
 
     protected $hidden = [
         'password'
