@@ -24,8 +24,17 @@ class Rq_Admin_login extends FormRequest
     public function rules()
     {
         return [
-            'username'=>'required',
-            'password'=>'required'
+            'username'=>'required|min:8',
+            'password'=>'required|min:6'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'username.required' => 'Tên tài khoản là bắt buộc',
+            'username.min'=>'Tối thiểu là 8 ký tự',
+            'password.required' => 'Mật khẩu là bắt buộc',
+            'password.min'=>'Mật khẩu tối thiểu 6 ký tự'
         ];
     }
 }

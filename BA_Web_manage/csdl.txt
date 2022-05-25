@@ -1,0 +1,59 @@
+1)admin:
+1. id: id admin(tự động tăng, khóa chính),
+2. name: tên Người quản trị,
+3. username: tên tài khoản,
+4. password: mật khẩu,
+5. role: (0:admin, 1:staff),
+5. sdt: số điện thoại
+
+2)user:
+1. id: id user(tự động tăng, khóa chính),
+2. fullname: họ và tên người dùng,
+3. gender: Giới tính (0:nam, 1:nữ, 2:khác),
+4. phone: số điện thoại,
+5. email: Email,
+6. password: Mật khẩu,
+
+3)confirm:
+1)id: id(khóa chính tự đồng tăng)
+2)email:địa chỉ maill cần xác nhận.
+3)code: Mã xác nhận.
+
+4)doctor: 
+1. id : id doctor(tự động tăng, khóa chính)
+2. fullname : họ và tên bác sĩ
+3. id_department : khóa ngoại với bảng department 
+4. phone : số điện thoại
+5. description : mô tả bác sĩ
+6. level : trình độ 
+7. price : giá tư vấn
+
+5)department: 
+1. id : id doctor(tự động tăng, khóa chính)
+
+6)sick_department: 
+1. id : id sick_department(tự động tăng, khóa chính)
+2. id_department : khóa ngoại với bảng department
+
+7)history:
+1. id: id history(tự động tăng, khóa chính)
+2. id_user: khóa ngoại với bảng users
+3. Time_book: thời gian khám 
+
+8)blog:
+1. id : id blog(tự động tăng, khóa chính)
+2. title : tiêu đề bài viết
+3. content: nội dung
+4. thumbnail: hình thu nhỏ
+5. view: lượt xem
+
+9)comment_blog:
+1. id comment_blog(tự động tăng, khóa chính)
+2. id_user: khóa ngoại với bảng users
+3. content: nội dụng comment_blog
+4. id_blog: khóa ngoại với bảng blog
+
+
+
+
+

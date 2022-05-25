@@ -18,6 +18,9 @@ class CreateMAdminsTable extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
+            $table->string('sdt')->nullable();
+            $table->string('role');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -32,3 +35,4 @@ class CreateMAdminsTable extends Migration
         Schema::dropIfExists('m__admins');
     }
 }
+

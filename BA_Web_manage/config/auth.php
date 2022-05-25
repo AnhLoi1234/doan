@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'web',
         'passwords' => 'm_admins',
     ],
 
@@ -36,14 +36,29 @@ return [
     */
 
     'guards' => [
-        // 'web' => [
-        //     'driver' => 'session',
-        //     'provider' => 'm_admins',
-        // ],
-
-        'api' => [
+        'web' => [
             'driver' => 'session',
             'provider' => 'm_admins',
+        ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'm_admins',
+            // 'hash' => false,
+        ],
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'm_users',
+            // 'hash' => false,
+        ],
+        'api_admin' => [
+            'driver' => 'passport',
+            'provider' => 'm_admins',
+            'hash' => false,
+        ],
+        'api_user' => [
+            'driver' => 'passport',
+            'provider' => 'm_users',
             'hash' => false,
         ],
     ],
@@ -70,6 +85,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin\M_admin::class,
         ],
+        'm_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User\M_users::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -95,6 +114,12 @@ return [
     'passwords' => [
         'm_admins' => [
             'provider' => 'm_admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'm_users' => [
+            'provider' => 'm_users',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

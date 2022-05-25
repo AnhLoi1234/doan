@@ -1,24 +1,74 @@
 <template>
-    <div class="container">
-        Chào Mừng Đến với trang quản Lý
+    <div class="container" id="app" ref="">
+        <div class="Menu">
+            <Menu></Menu>
+        </div>
+        <div class="content">
+            <Header></Header>
+        </div>
+
     </div>
 </template>
 
 <script>
+import Header from './Layout/Header.vue'
+import Menu from './Layout/Menu.vue'
+import Request from '@/Request';
+import { mapState, mapMutations } from 'vuex';
 export default {
     data() {
         return {
-
         }
     },
     beforeCreate() {
-        if(!window.localStorage.getItem("token")){
-            this.$router.push({name:'admin_login'})
-        }
+
     },
+    computed: {
+        ...mapState(['admin']),
+    },
+    methods: {
+        ...mapMutations(['setadmin']),
+        CheckAuth: function () {
+            if (window.localStorage.getItem("K-admin")) {
+                Request.GetAuth('/admin-information', 'K-admin')
+                    .then((res) => {
+                        this.setadmin(res.data)
+                    })
+                    .catch((err) => {
+                        window.localStorage.removeItem('K-admin')
+                        console.log(err)
+                        this.$router.push({ name: 'admin_login' })
+                    })
+            }
+            else {
+                this.$router.push({ name: 'admin_login' })
+            }
+        },
+    },
+    mounted() {
+        this.CheckAuth()
+    },
+    components: {
+        Header,
+        Menu
+    }
 }
 </script>
-
 <style scoped>
+#app {
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
+}
 
+.container {
+    display: flex;
+}
+
+.Menu {
+    width: 20%;
+}
+
+.content {
+    width: 100%;
+}
 </style>

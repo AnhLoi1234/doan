@@ -2,23 +2,28 @@ const axios = require('axios');
 const Apiurl = 'http://127.0.0.1:8000/api';
 
 export default {
-    AdminGetHeader(){
-        let token = window.localStorage.getItem('admin');
+    GetHeader(m_auth){
+        let token = window.localStorage.getItem(m_auth);
         return {Authorization:'Bearer ' + token }
     },
     Get(url) {
         return axios.get(
             Apiurl+url,
-            {headers: this.AdminGetHeader()})
+            {headers: this.GetHeader()})
     },
     Post(url, data){
         return axios.post(
             Apiurl+url,data,
-            {headers: this.AdminGetHeader()}) 
+            {headers: this.GetHeader()}) 
     },
     login(url,data){
         return axios.post(
             Apiurl+url,data,
         ) 
+    },
+    GetAuth(url, authTK){
+        return axios.get(
+            Apiurl+url,
+            {headers: this.GetHeader(authTK)})
     },
 }

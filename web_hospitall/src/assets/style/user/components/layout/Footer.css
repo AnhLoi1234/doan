@@ -1,0 +1,122 @@
+
+.footer__end {
+    background-color: #64b9e5;
+    padding: 3rem 0rem;
+  }
+  
+  .footer__end--main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  
+  .footer__end--main span {
+    font-size: 1.4rem;
+  }
+  
+  .footer__end--main div {
+    display: flex;
+    font-size: 3.6rem;
+    gap: 2rem;
+  }
+  
+  .footer__end--main div a {
+    color: #fff;
+  }
+  
+  .footer__main {
+    background-color: #efefef;
+    padding: 3rem 0rem;
+  }
+  
+  .footer__main > div {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  @media all and (max-width: 768px) {
+    .footer__main > div {
+      display: block;
+    }
+  }
+  
+  .footer__main--logo {
+    max-width: 36rem;
+    height: auto;
+  }
+  
+  .footer__main--logo img {
+    object-fit: cover;
+  }
+  
+  @media all and (max-width: 1024px) {
+    .footer__main ul {
+      padding: 1rem 0.8rem;
+    }
+  }
+  
+  .footer__main ul:nth-child(1) {
+    font-size: 1.5rem;
+  }
+  
+  @media all and (min-width: 1024px) {
+    .footer__main ul:nth-child(1) {
+      width: 50%;
+    }
+  }
+  
+  .footer__main ul:nth-child(1) li {
+    line-height: 2rem;
+    padding: 1rem 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .footer__main ul:nth-child(1) li:nth-child(2) {
+    font-weight: bold;
+  }
+  
+  .footer__main ul:nth-child(1) li img {
+    width: 20rem;
+  }
+  
+  .footer__main ul:nth-child(2) {
+    padding: 0rem 4rem;
+  }
+  
+  @media all and (min-width: 1024px) {
+    .footer__main ul:nth-child(2) {
+      width: 25%;
+    }
+  }
+  
+  @media all and (max-width: 768px) {
+    .footer__main ul:nth-child(2) {
+      padding: 1rem;
+    }
+  }
+  
+  .footer__main ul:nth-child(2) li {
+    padding: 1rem 0rem;
+  }
+  
+  .footer__main ul:nth-child(2) li a {
+    color: var(--color);
+  }
+  
+  @media all and (min-width: 1024px) {
+    .footer__main ul:nth-child(3) {
+      width: 25%;
+    }
+  }
+  
+  .footer__main ul:nth-child(3) li {
+    margin-bottom: 1.6rem;
+  }
+  
+  .footer__main ul:nth-child(3) li h4 {
+    font-size: 1.6rem;
+  }
