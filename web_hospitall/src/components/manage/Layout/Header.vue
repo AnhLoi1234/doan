@@ -37,4 +37,3 @@ export default {
     // }
 }
 </script>
-<style scoped src = '@/assets/style/manage/components/layout/header.css'></style>

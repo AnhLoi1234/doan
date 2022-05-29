@@ -1,5 +1,5 @@
 <template>
-    <div class="container" id="app" ref="">
+    <div class="container" id="app">
         <div class="Menu">
             <Menu></Menu>
         </div>

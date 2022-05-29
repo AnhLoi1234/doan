@@ -119,5 +119,3 @@ export default {
 
 }
 </script>
-<style scoped src = '@/assets/style/user/components/Content/Home.css'>
-</style>

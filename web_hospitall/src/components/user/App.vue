@@ -7,9 +7,6 @@
     </div>
 </template>
 
-<style scoped src = '@/assets/style/user/app.css'>
-</style>
-
 <script>
 import Header from './components/layout/Header.vue'
 import Content from './components/layout/Content.vue'
@@ -42,3 +39,5 @@ export default {
     }
 }
 </script>
+
+<style src="@/assets/style/main.css"></style>

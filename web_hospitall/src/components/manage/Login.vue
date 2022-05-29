@@ -1,13 +1,13 @@
 <template>
 
 <div class="container">
-	<Loading v-if="loading"></Loading>
+	<Loading v-if="load"></Loading>
     <div class="header">
         <h1> ĐĂNG NHẬP TRANG QUẢN LÝ</h1>
     </div>
 	<div class="screen">
 		<div class="screen__content">
-			<form class="login" method="post" @submit.prevent="login()">
+			<form class="login_admin" method="post" @submit.prevent="login()">
 				<p class="error_login">{{status}}</p>
 				<div class="login__field">
 					<input type="text" class="login__input" v-model="account.username" placeholder="Tên đăng nhập ">
@@ -29,7 +29,7 @@
 				
 			</div>
 		</div>
-		<div class="screen__background">aksjfal
+		<div class="screen__background">
 			<span class="screen__background__shape screen__background__shape4"></span>
 			<span class="screen__background__shape screen__background__shape3"></span>		
 			<span class="screen__background__shape screen__background__shape2"></span>
@@ -40,11 +40,11 @@
 </template>
 <script>
 import Request from '@/Request';
-import Loading from '@/components/Loading';
+import Loading from './Loading.vue';
 export default {
 	data() {
 		return {
-			loading:false,
+			load:true,
 			account:{
 				username:'',
 				password:'',
@@ -58,7 +58,7 @@ export default {
 	},
 	methods:{
 		login:async function(){
-			this.loading = true;
+			this.load = true;
 			this.status = '';
 			this.errors = {};
 			try {
@@ -71,15 +71,15 @@ export default {
 					alert('Chưa làm')
 				}
 				
-				this.loading = false;
+				this.load = false;
 			} catch (error) {
 				if(error.response.status == 500) {
 					this.status = 'Không thể kết nối đến server';
-					this.loading = false;
+					this.load = false;
 					return
 				}
 				this.status = error.response.data.message;
-				this.loading = false;
+				this.load = false;
 				// this.errors = error.response.data.errors;
 				console.log(error);
 				this.errors.username = error.response.data.errors.username?.[0];
@@ -102,4 +102,4 @@ export default {
 	}
 }
 </script>
-<style scoped src ='@/assets/style/manage/Login.css'></style>
+<style scoped src ='@/assets/style/Login.css'></style>

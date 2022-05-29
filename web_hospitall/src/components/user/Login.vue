@@ -67,5 +67,3 @@ export default {
     }
 }
 </script>
-<style scoped src = '@/assets/style/user/components/login.css'>
-</style>

@@ -1,0 +1,8 @@
+.error{
+    border: 1px solid red
+  }
+  .login__container > div >p{
+    color: red;
+    font-weight: bold;
+    font-size: 13px;
+  }

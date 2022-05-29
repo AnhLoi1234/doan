@@ -27,6 +27,9 @@
 	border-left-color: transparent;
 	border-right-color: transparent;
 }
+.loader:before,.loader:after {
+    display: none;
+}
 
 @keyframes loader-02 {
 	0% {
