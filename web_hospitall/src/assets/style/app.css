@@ -6,3 +6,59 @@
     font-weight: bold;
     font-size: 13px;
   }
+  .login__container>div>input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .confirm__wrap{
+    position:fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color:rgba(117, 117, 117, 0.503);
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .confirm__wrap .confirm{
+    background-color:#fff;
+    padding: 40px 60px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .confirm__wrap .confirm>h2>span{
+    color: red;
+    display:block;
+    text-align: center;
+  }
+  .confirm__wrap .confirm>input[type='number']{
+    color: rgb(48, 48, 48);
+    outline: none;
+    background-color: rgb(223, 225, 223);
+    padding: 10px 20px;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+  .btn{
+    margin-top: 10px;
+  }
+  .btn>button{
+    padding: 10px 15px;
+    background-color:rgb(204, 204, 204);
+    margin-left:6px;
+    color: rgb(145, 145, 145);
+    font-weight: bold;
+    transition:all .4s
+  }
+  .btn>button:hover{
+    transform:scale(1.1);
+    color: rgb(63, 63, 63);
+  }
+  .admin.type02{
+    height:auto;
+  }

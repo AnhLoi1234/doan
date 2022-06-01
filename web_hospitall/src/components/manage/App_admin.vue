@@ -1,12 +1,7 @@
 <template>
-    <div class="container" id="app">
-        <div class="Menu">
-            <Menu></Menu>
-        </div>
-        <div class="content">
-            <Header></Header>
-        </div>
-
+    <div class="">
+        <Header></Header>
+        <Menu></Menu>
     </div>
 </template>
 
@@ -15,13 +10,13 @@ import Header from './Layout/Header.vue'
 import Menu from './Layout/Menu.vue'
 import Request from '@/Request';
 import { mapState, mapMutations } from 'vuex';
-export default {
-    data() {
-        return {
-        }
-    },
-    beforeCreate() {
+import { ref, provide } from "vue";
+export default{
+    setup(){
+        let state = ref(123123)
 
+        provide('btn_menu',state)
+        return state;
     },
     computed: {
         ...mapState(['admin']),
@@ -47,6 +42,7 @@ export default {
     },
     mounted() {
         this.CheckAuth()
+        console.log(this.state)
     },
     components: {
         Header,

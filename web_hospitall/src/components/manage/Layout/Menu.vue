@@ -1,23 +1,45 @@
 <template lang="vn">
-    <div class="menu">
-        <p class="title">MH HOSPITALL</p>
-        <div class="imguser">
-            <div class="infor"><img src="@/assets/img/user.png" alt="123"></div>
-            <div>
-                <span>{{admin.name}}</span><br>
-                <span>Người quản trị</span>
+     <div class="admin">
+        <div class="admin__container">
+            <div class="admin__sidebar active" ref="menu">
+                <p>Dashboard</p>
+                <ul>
+                    <li class="active">
+                        <a href="">
+                            <span class="bx bx-home"></span>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="bx bx-user"></span>
+                            <span>{{menu}}</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
+            <div @click="click" class="admin__content"></div>
         </div>
     </div>
 </template>
 <script>
 import {mapState} from "vuex"
+import { inject } from 'vue'
 export default {
-    data(){
-        return{}
+    setup(){
+        const menu = inject('btn_menu');
+        return menu;
     },
     computed:{
-        ...mapState(['admin'])
+        ...mapState(['admin']),
+    },
+    mounted(){
+        
+    },
+    methods:{
+        click:function(){
+            console.log(this.menu)
+        }
     }
 }
 </script>

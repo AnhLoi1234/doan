@@ -44,7 +44,7 @@ import Loading from './Loading.vue';
 export default {
 	data() {
 		return {
-			load:true,
+			load:false,
 			account:{
 				username:'',
 				password:'',

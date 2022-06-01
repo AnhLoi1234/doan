@@ -27,11 +27,9 @@
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
             </ul>
-            <div class="header__support">
-                <router-link :to="{ name: (user ? '' :'Login')}">
-                    <i class='bx bxs-user' style='color:#318c9c'></i>
-                    <span>{{user ? user.fullname : "Đăng nhập"}}</span>
-                </router-link>
+            <div class="header__support" @click="this.$router.push({ name: (user ? '' :'Login')})">
+                <i class='bx bxs-user' style='color:#318c9c'></i>
+                <span>{{user ? user.fullname : "Đăng nhập"}}</span>
             </div>
         </div>
         <div class="header__menu">
