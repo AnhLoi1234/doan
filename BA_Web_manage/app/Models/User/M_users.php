@@ -10,12 +10,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class M_users extends Authenticatable
 {
-    use HasApiTokens,Notifiable;
+    use HasApiTokens, Notifiable;
     protected $fillable = [
-        'fullname', 'gender', 'phone','email','password',
+        'fullname', 'gender', 'phone', 'email', 'password', 'type_user'
     ];
 
     protected $hidden = [
-        'password','remember_token',
+        'password', 'remember_token',
     ];
 }

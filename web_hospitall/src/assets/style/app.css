@@ -62,3 +62,7 @@
   .admin.type02{
     height:auto;
   }
+  .admin.type02 .admin__header--logo>a>img{
+    width: 160px;
+    height: auto;
+  }

@@ -1,7 +1,7 @@
 <template lang="vn">
      <div class="admin">
         <div class="admin__container">
-            <div class="admin__sidebar active" ref="menu">
+            <div class="admin__sidebar" :class ="{'active':menu}">
                 <p>Dashboard</p>
                 <ul>
                     <li class="active">
@@ -13,7 +13,7 @@
                     <li>
                         <a href="">
                             <span class="bx bx-user"></span>
-                            <span>{{menu}}</span>
+                            <span></span>
                         </a>
                     </li>
                 </ul>
@@ -27,18 +27,18 @@ import {mapState} from "vuex"
 import { inject } from 'vue'
 export default {
     setup(){
-        const menu = inject('btn_menu');
-        return menu;
+        let menu = inject('btn_menu');
+        return {menu};
     },
     computed:{
         ...mapState(['admin']),
     },
     mounted(){
-        
+        // this.menu = this.$refs.slide_menu
     },
     methods:{
         click:function(){
-            console.log(this.menu)
+            console.log(this.$refs.btn_menu)
         }
     }
 }

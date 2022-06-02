@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMUsersTable extends Migration
+class CreateMTimeBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateMUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('m_users', function (Blueprint $table) {
+        Schema::create('m_time_books', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('fullname');
-            $table->string('gender');
-            $table->string('phone');
-            $table->integer('type_user');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('time');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ class CreateMUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_users');
+        Schema::dropIfExists('m_time_books');
     }
 }

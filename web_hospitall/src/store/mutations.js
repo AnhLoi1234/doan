@@ -1,11 +1,14 @@
-export default{
-    setadmin(state, data){
+export default {
+    setadmin(state, data) {
         state.admin = data
     },
-    setuser(state, data){
+    setuser(state, data) {
         state.user = data
     },
-    setuserLoad(state, data){
+    setuserLoad(state, data) {
         state.User_load = data
+    },
+    setBook(state, data) {
+        state.book = data
     }
 }

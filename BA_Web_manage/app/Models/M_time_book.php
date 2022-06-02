@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class M_confirm extends Model
+class M_time_book extends Model
 {
     protected $fillable = [
-        'email', 'code'
+        'time'
     ];
 }

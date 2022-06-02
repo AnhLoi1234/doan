@@ -53,6 +53,12 @@ export default {
 			status:''
 		}
 	},
+	beforeCreate(){
+		let Auth = window.localStorage.getItem("K-admin");
+		if(Auth){
+			this.$router.push({name:'manage'})
+		}
+	},
 	components:{
 		Loading
 	},

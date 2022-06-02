@@ -18,13 +18,25 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/admin-register','Admin\C_Admin@register');
-Route::post('/admin-login','Admin\C_Admin@login');
-Route::get('/admin-information','Admin\C_Admin@adminAuth')->middleware(['auth:api_admin','scopes:admin']);
-
+Route::post('/admin-register', 'Admin\C_Admin@register');
+Route::post('/admin-login', 'Admin\C_Admin@login');
+Route::get('/admin-information', 'Admin\C_Admin@adminAuth')->middleware(['auth:api_admin', 'scopes:admin']);
 
 //user
-Route::post('/user-register-check','User\C_User@confirmEmail');
-Route::post('/user-register','User\C_User@register');
-Route::post('/user-login','User\C_User@login');
-Route::get('/user-information','User\C_User@userAuth')->middleware(['auth:api_user','scopes:user']);
+Route::post('/user-register-check', 'User\C_User@confirmEmail');
+Route::post('/user-register', 'User\C_User@register');
+Route::post('/user-login', 'User\C_User@login');
+Route::get('/user-information', 'User\C_User@userAuth')->middleware(['auth:api_user', 'scopes:user']);
+Route::get('/doctors', 'User\C_User@getDoctor');
+
+// specicallist
+Route::get('/specicallists', 'C_specical_list@getSpecicalList');
+Route::post('/specicallists', 'C_specical_list@addSpecicalList');
+Route::put('/specicallists', 'C_specical_list@updateSpecicalList');
+Route::delete('/specicallists/{id}', 'C_specical_list@deleteSpecicalList');
+
+//time book
+Route::get('/timebooks', 'C_time_book@getAllTimeBook');
+
+//book list
+Route::post('/booklists', 'C_book_list@addBookList');

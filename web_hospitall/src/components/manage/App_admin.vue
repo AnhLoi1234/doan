@@ -13,10 +13,9 @@ import { mapState, mapMutations } from 'vuex';
 import { ref, provide } from "vue";
 export default{
     setup(){
-        let state = ref(123123)
-
+        let state = ref(true)
         provide('btn_menu',state)
-        return state;
+        return {state};
     },
     computed: {
         ...mapState(['admin']),
@@ -42,7 +41,6 @@ export default{
     },
     mounted() {
         this.CheckAuth()
-        console.log(this.state)
     },
     components: {
         Header,
