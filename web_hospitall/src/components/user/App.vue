@@ -31,14 +31,13 @@ export default {
         ...mapMutations(['setuser'])
     },
     beforeCreate() {
-        if (window.localStorage.getItem('k-user')) {
-            Request.Post('/user-information',)
+        if (window.localStorage.getItem('K-user')) {
+            Request.GetAuth('/user-information','K-user')
                 .then((res) => {
                     // this.setuser(re)
-                    console.log(res);
+                    this.setuser(res.data)
                 })
         }
-
     }
 }
 </script>

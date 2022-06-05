@@ -31,6 +31,10 @@
                 <i class='bx bxs-user' style='color:#318c9c'></i>
                 <span>{{ user ? user.fullname : "Đăng nhập" }}</span>
             </div>
+            <div @click="logout()" v-if="user != null" class="header__support">
+                <i class='bx bx-exit' style='color:#318c9c'></i>
+                <span></span>
+            </div>
         </div>
         <div class="header__menu" :class="isActive ? 'active' : ''">
             <ul>
@@ -62,7 +66,7 @@
     </header>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations} from 'vuex'
 export default {
     data() {
         return {
@@ -71,6 +75,16 @@ export default {
     },
     computed: {
         ...mapState(['user'])
+    },
+    methods:{
+        ...mapMutations(['setuser']),
+        logout: function(){
+            let auth = confirm('Bạn có muốn đăng xuất?')
+            if(auth) {
+                window.localStorage.removeItem('K-user')
+                this.setuser(null)
+            }
+        }
     }
 }
 </script>
