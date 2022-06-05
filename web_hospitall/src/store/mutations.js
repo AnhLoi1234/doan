@@ -10,5 +10,8 @@ export default {
     },
     setBook(state, data) {
         state.book = data
+    },
+    setModal(state, data) {
+        state.modal = data;
     }
 }

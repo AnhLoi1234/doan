@@ -9,6 +9,28 @@ use Illuminate\Support\Facades\DB;
 
 class C_book_list extends Controller
 {
+
+    public function getAllBookList()
+    {
+        $result = DB::select("SELECT * FROM m_book_lists INNER JOIN m__admins ON m_book_lists.iddoctor = m__admins.id 
+        INNER JOIN  m_users ON  m_book_lists.iduser = m_users.id");
+        return response()->json(['data' => $result]);
+    }
+
+    public function getBookListLimit()
+    {
+        $result = DB::select("SELECT * FROM m_book_lists INNER JOIN m__admins ON m_book_lists.iddoctor = m__admins.id 
+        INNER JOIN  m_users ON  m_book_lists.iduser = m_users.id ORDER BY m_book_lists.created_at DESC LIMIT 0,10 ");
+        return response()->json(['data' => $result]);
+    }
+
+    public function getBookListById(Request $request)
+    {
+        $result = DB::select("SELECT * FROM m_book_lists INNER JOIN m__admins ON m_book_lists.iddoctor = m__admins.id 
+        INNER JOIN  m_users ON  m_book_lists.iduser = m_users.id WHERE m_book_lists.id = ? ", [$request->id]);
+        return response()->json(['data' => $result]);
+    }
+
     public function addBookList(Request $request)
     {
         $utils = new Utils;

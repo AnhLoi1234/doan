@@ -26,6 +26,7 @@ class CreateMBookListsTable extends Migration
             $table->string('gender');
             $table->string('phone');
             $table->date('birthday');
+            $table->integer('dayofweek');
             $table->string('address');
             $table->timestamps();
 

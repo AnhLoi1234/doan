@@ -1831,6 +1831,7 @@ select {
 .admin__sidebar>ul>li {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .admin__sidebar>ul>li>a {
@@ -1873,7 +1874,7 @@ select {
 
 .admin__container {
   display: flex;
-  flex: 1;
+  height: 100%;
 }
 
 .admin__content {
@@ -1901,4 +1902,5 @@ select {
 }
 
 /*# sourceMappingURL=app.css.map */
-@import './app.css'
+@import './app.css';
+@import './admin.css'

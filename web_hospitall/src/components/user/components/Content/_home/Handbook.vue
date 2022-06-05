@@ -1,48 +1,46 @@
 <template>
     <div class="wrapper">
         <p class="item__post--heading">
-            Cẩm nang
+            Bài viết
         </p>
         <div class="row">
             <div class="item__guide">
-                <a href="" class="item__guide--item">
+                <router-link to="" v-for="item in list" :key="item.id" class="item__guide--item">
                     <div class="item__guide--item--image col-4 img-wrap"
-                        style="background-image: url('https://cdn.bookingcare.vn/fr/w300/2022/05/06/102403-benh-vien-nam-hoc-va-hiem-muon-ha-noi.jpg');">
+                        :style="{ background: `url(${urlImage + item.thumbnail})` }">
                     </div>
-                    <p class="item__guide--item--text col-8">
-                        Tuần lễ vàng - Ưu đãi tháng 5 tại Bệnh Viện Nam học và Hiếm muộn Hà Nội
-                    </p>
-                </a>
-                <a href="" class="item__guide--item">
-                    <div class="item__guide--item--image col-4 img-wrap"
-                        style="background-image: url('https://cdn.bookingcare.vn/fr/w300/2022/05/06/102403-benh-vien-nam-hoc-va-hiem-muon-ha-noi.jpg');">
+                    <div>
+                        <p class="item__guide--item--text col-8">
+                            {{ item.title }} <br />
+
+                        </p>
+                        <!-- <p> {{ item.created_at }}</p> -->
                     </div>
-                    <p class="item__guide--item--text col-8">
-                        Tuần lễ vàng - Ưu đãi tháng 5 tại Bệnh Viện Nam học và Hiếm muộn Hà Nội
-                    </p>
-                </a>
-                <a href="" class="item__guide--item">
-                    <div class="item__guide--item--image col-4 img-wrap"
-                        style="background-image: url('https://cdn.bookingcare.vn/fr/w300/2022/05/06/102403-benh-vien-nam-hoc-va-hiem-muon-ha-noi.jpg');">
-                    </div>
-                    <p class="item__guide--item--text col-8">
-                        Tuần lễ vàng - Ưu đãi tháng 5 tại Bệnh Viện Nam học và Hiếm muộn Hà Nội
-                    </p>
-                </a>
-                <a href="" class="item__guide--item">
-                    <div class="item__guide--item--image col-4 img-wrap"
-                        style="background-image: url('https://cdn.bookingcare.vn/fr/w300/2022/05/06/102403-benh-vien-nam-hoc-va-hiem-muon-ha-noi.jpg');">
-                    </div>
-                    <p class="item__guide--item--text col-8">
-                        Tuần lễ vàng - Ưu đãi tháng 5 tại Bệnh Viện Nam học và Hiếm muộn Hà Nội
-                    </p>
-                </a>
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 <script>
-export default {
+import { URL_IMAGE } from '../../../../../Config'
+import Request from '../../../../../Request'
 
+export default {
+    data() {
+        return {
+            urlImage: URL_IMAGE,
+            list: []
+        }
+    },
+    mounted() {
+        (async () => {
+            try {
+                const result = await Request.Get('/blogs');
+                this.list = result.data.data;
+            } catch (error) {
+                alert(error);
+            }
+        })()
+    }
 }
 </script>

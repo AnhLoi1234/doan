@@ -2,8 +2,8 @@
     <div>
         <Banner></Banner>
         <Handbook></Handbook>
-        <Service></Service>
         <Specialist></Specialist>
+        <Service></Service>
     </div>
 </template>
 <script>

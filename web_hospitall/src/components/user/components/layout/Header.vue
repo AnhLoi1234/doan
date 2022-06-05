@@ -2,59 +2,62 @@
     <header id="header" class="header">
         <div class="wrapper header__content">
             <div class="header__icon">
-                <span class="bx bx-menu"></span>
+                <span @click="isActive = !isActive" class="bx bx-menu"></span>
             </div>
             <div class="header__logo">
-                <router-link :to="{name:'User_Home'}">
+                <router-link :to="{ name: 'User_Home' }">
                     <img src="@/assets/img/logo/logo.svg" alt="" srcset="">
                 </router-link>
             </div>
             <ul class="header__list">
-                <li>
+                <li class="hide-show">
                     <p>Chuyên khoa</p>
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
-                <li>
+                <li class="hide-show">
                     <p>Chuyên khoa</p>
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
-                <li>
+                <li class="hide-show">
                     <p>Chuyên khoa</p>
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
-                <li>
+                <li class="hide-show">
                     <p>Chuyên khoa</p>
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
             </ul>
-            <div class="header__support" @click="this.$router.push({ name: (user ? '' :'Login')})">
+            <div class="header__support" @click="this.$router.push({ name: (user ? '' : 'Login') })">
                 <i class='bx bxs-user' style='color:#318c9c'></i>
-                <span>{{user ? user.fullname : "Đăng nhập"}}</span>
+                <span>{{ user ? user.fullname : "Đăng nhập" }}</span>
             </div>
         </div>
-        <div class="header__menu">
+        <div class="header__menu" :class="isActive ? 'active' : ''">
             <ul>
-                <li><a href="">
-                        Trang chủ
-                    </a></li>
-                <li><a href="">
-                        Trang chủ
-                    </a></li>
-                <li><a href="">
-                        Trang chủ
-                    </a></li>
                 <li>
-                    <div>VỀ BOOKINGCARE</div>
+                    <router-link :to="{
+                        name: 'User_Home'
+                    }">
+                        Trang chủ
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">Về cho bệnh nhân</a>
+                    <router-link :to="{
+                        name: 'Doctors'
+                    }">
+                        Bác sĩ
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">Về cho bác sỹ</a>
+                    <router-link :to="{
+                        name: 'Blogs'
+                    }">
+                        Bài viết
+                    </router-link>
                 </li>
             </ul>
         </div>
-        <div class="header__menu--overlay">
+        <div @click="isActive = false" class="header__menu--overlay" :class="isActive ? 'active' : ''">
         </div>
     </header>
 </template>
@@ -62,9 +65,11 @@
 import { mapState } from 'vuex'
 export default {
     data() {
-        return {}
+        return {
+            isActive: false
+        }
     },
-    computed:{
+    computed: {
         ...mapState(['user'])
     }
 }

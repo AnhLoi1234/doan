@@ -9,7 +9,7 @@
             <div class="banner__search--input col-md-4">
                 <input type="text" placeholder="Tìm gói khám">
                 <i class="bx bx-search"></i>
-                <div class="banner__search--popup">
+                <!-- <div class="banner__search--popup">
                     <ul>
                         <li class="active">Chuyên khoa</li>
                         <li>Cơ xương khớp</li>
@@ -31,10 +31,10 @@
                         <li>Thần kinh</li>
                         <li>Tiêu hoá</li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div class="banner__option--container">
+        <!-- <div class="banner__option--container">
             <div class="wrapper banner__option">
                 <a href="" class="banner__option--item">
                     <div class="">
@@ -109,7 +109,7 @@
                     </p>
                 </a>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

@@ -10,7 +10,6 @@ use App\Http\Requests\user\Rq_login;
 use App\Models\User\M_users;
 use App\Models\User\M_confirm;
 use Illuminate\Support\Facades\DB;
-use App\Utils\Utils;
 
 // session_start();
 
@@ -61,20 +60,14 @@ class C_User extends Controller
         }
     }
 
-    public function getDoctor()
-    {
-        $result = DB::select("SELECT * , m_users.id as 'iduser'  FROM m_users LEFT JOIN m_info_users ON m_users.id = m_info_users.iduser WHERE m_users.type_user = 0");
-        $arrObj = [];
-        $utils = new Utils;
-        foreach ($result as $key => $value) {
-            $books = DB::select("SELECT * FROM m_book_lists WHERE iddoctor = $value->iduser AND datebook = CURDATE() AND dayofweek = " . ($utils->getWeekdayMain()));
-            array_push($arrObj, ['info' => $value, 'books' => $books]);
-        }
-        return response()->json(['data' => $arrObj]);
-    }
-
     public function userAuth(Request $request)
     {
         return response()->json($request->user('api_user'));
+    }
+
+    public function getAllUser()
+    {
+        $result = DB::select("SELECT * FROM m_users");
+        return (response()->json(['data' => $result]));
     }
 }

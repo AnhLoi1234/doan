@@ -5,7 +5,7 @@
                 <img :src="book.doctor.info.avatar" alt="">
                 <div class="order__form--top--content">
                     <p>ĐẶT LỊCH KHÁM</p>
-                    <p>{{ book.doctor.info.position }} {{ book.doctor.info.fullname }}</p>
+                    <p>{{ book.doctor.info.position }} {{ book.doctor.info.name }}</p>
                     <p>{{ book.time.time }} - {{ book.date.dayofweek === 0 ? "Chủ nhật" : `Thứ
                                             ${book.date.dayofweek + 1}`
                     }} - {{ book.date.day }}/{{ book.date.month }}/2022</p>

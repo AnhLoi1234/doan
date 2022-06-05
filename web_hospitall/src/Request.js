@@ -2,28 +2,38 @@ const axios = require('axios');
 const Apiurl = 'http://127.0.0.1:8000/api';
 
 export default {
-    GetHeader(m_auth){
+    GetHeader(m_auth) {
         let token = window.localStorage.getItem(m_auth);
-        return {Authorization:'Bearer ' + token }
+        return { Authorization: 'Bearer ' + token }
     },
     Get(url) {
         return axios.get(
-            Apiurl+url,
-            {headers: this.GetHeader()})
+            Apiurl + url,
+            { headers: this.GetHeader() })
     },
-    Post(url, data){
+    Post(url, data) {
         return axios.post(
-            Apiurl+url,data,
-            {headers: this.GetHeader()}) 
+            Apiurl + url, data,
+            { headers: this.GetHeader() })
     },
-    login(url,data){
+    Put(url, data) {
+        return axios.put(
+            Apiurl + url, data,
+            { headers: this.GetHeader() })
+    },
+    Delete(url) {
+        return axios.delete(
+            Apiurl + url,
+            { headers: this.GetHeader() })
+    },
+    login(url, data) {
         return axios.post(
-            Apiurl+url,data,
-        ) 
+            Apiurl + url, data,
+        )
     },
-    GetAuth(url, authTK){
+    GetAuth(url, authTK) {
         return axios.get(
-            Apiurl+url,
-            {headers: this.GetHeader(authTK)})
+            Apiurl + url,
+            { headers: this.GetHeader(authTK) })
     },
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\M_specical_list;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class C_specical_list extends Controller
 {
@@ -15,6 +16,20 @@ class C_specical_list extends Controller
         $mSpecicalList = $mSpecicalList->all();
         return response()->json([
             'data' => $mSpecicalList
+        ]);
+    }
+
+    public function searchSpecicalList(Request $request)
+    {
+        $result = DB::select("SELECT * FROM m_specical_lists WHERE namespecical LIKE '%" . $request->value . "%'");
+        return response()->json(['data' => $result]);
+    }
+
+    public function getSpecicalListById(Request $request)
+    {
+        $mSpecicalList = DB::select("SELECT * FROM m_specical_lists WHERE id = ?", [$request->id]);
+        return response()->json([
+            'data' => sizeof($mSpecicalList) === 0 ? null : $mSpecicalList[0]
         ]);
     }
 
@@ -32,14 +47,18 @@ class C_specical_list extends Controller
 
     public function updateSpecicalList(Request $request)
     {
-        DB::update("UPDATE m_specical_lists SET namespecical = '" . $request->namespecical . "' WHERE id = $request->id");
-        $res = DB::select("SELECT * FROM m_specicallists WHERE id = $request->id");
-        if (sizeof($res) === 0) {
-            $res = new M_specical_list;
-            $res->namespecical = $request->namespecical;
-            $res->save();
-            $res = [$res];
-        }
+        DB::table('m_specical_lists')->where('id', $request->id)->update([
+            'namespecical' => $request->namespecical,
+            'thumbnail' => $request->thumbnail
+        ]);
+        $res = DB::select("SELECT * FROM m_specical_lists WHERE id = ? ", [$request->id]);
+        // if (sizeof($res) === 0) {
+        //     $res = new M_specical_list;
+        //     $res->namespecical = $request->namespecical;
+        //     $res->thumbnail = $request->thumbnail;
+        //     $res->save();
+        //     $res = [$res];
+        // }
         return response()->json([
             'data' => sizeof($res) >  0 ? $res[0] : null
         ]);
@@ -47,9 +66,15 @@ class C_specical_list extends Controller
 
     public function deleteSpecicalList(Request $request)
     {
+        $mSpecicalList = DB::select("SELECT * FROM m_specical_lists WHERE id = ?", [$request->id]);
+        if (sizeof($mSpecicalList) > 0) {
+            if (File::exists(public_path('images/' . $mSpecicalList[0]->thumbnail))) {
+                File::delete(public_path('images/' . $mSpecicalList[0]->thumbnail));
+            }
+        }
         DB::delete("DELETE FROM m_specical_lists WHERE id = '" . $request->id . "'");
         return response()->json([
-            'data' => $request->id
+            'status' => true
         ]);
     }
 }

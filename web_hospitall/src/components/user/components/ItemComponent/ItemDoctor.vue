@@ -8,7 +8,7 @@
                 </span>
             </div>
             <div class="order__item--left--content">
-                <h3>{{ doctor.info.position }} {{ doctor.info.fullname }}</h3>
+                <h3>{{ doctor.info.position }} {{ doctor.info.name }}</h3>
                 <p>Chuyên gia trên 35 năm kinh nghiệm trong lĩnh vực bệnh lý Tiêu hóa</p>
                 <p>Chuyên gia đầu ngành trong lĩnh vực bệnh lý Tiêu hóa</p>
                 <p>Nguyên Giám đốc Bệnh viện Đại học Y Hà Nội</p>

@@ -18,7 +18,6 @@ class CreateMUsersTable extends Migration
             $table->string('fullname');
             $table->string('gender');
             $table->string('phone');
-            $table->integer('type_user');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

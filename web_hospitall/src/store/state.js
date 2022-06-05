@@ -9,4 +9,8 @@ export default {
     },
     User_load: false,
     book: null,
+    modal: {
+        data: null,
+        loading: true,
+    }
 }

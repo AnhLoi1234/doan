@@ -3,7 +3,7 @@
         <span @click="handleShowPopup()">{{ selected?.name }}</span>
         <span class="bx bx-chevron-down"></span>
         <ul :class="{ 'active': isShow }">
-            <li @click="handleSelectedCalendar(calendar)" v-for="calendar in calendars" :key="calendar.id">{{
+            <li @click="handleSelectedCalendar(calendar)" v-for="calendar in doctor.dates" :key="calendar.id">{{
                     calendar.name
             }}</li>
         </ul>
@@ -33,8 +33,7 @@ export default {
     data() {
         return {
             isShow: false,
-            selected: { id: 1, name: "THỨ 3 - 31/5", dayofweek: 2, day: 31, month: 5 },
-            calendars: [{ id: 1, name: "THỨ 2 - 31/5", dayofweek: 2, day: 31, month: 5 }, { id: 2, name: "THỨ 4 - 01/06", dayofweek: 3, day: 1, month: 6 }, { id: 3, name: "THỨ 5 - 02/06", dayofweek: 4, day: 2, month: 6 }]
+            selected: this.doctor.dates.length > 0 ? this.doctor.dates[0] : {},
         };
     },
     props: ['times', 'doctor', 'isDetail', 'time_'],

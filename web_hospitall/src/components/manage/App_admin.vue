@@ -1,68 +1,65 @@
 <template>
-    <div class="">
-        <Header></Header>
-        <Menu></Menu>
+    <Base>
+    <div class="dashboard">
+        <div class="dashboard__top">
+            <ItemDashboard :name="'Khách hàng'" :length="dashboard.user.length"></ItemDashboard>
+            <ItemDashboard :name="'Lịch đặt'" :length="dashboard.bookList.length"></ItemDashboard>
+            <ItemDashboard :name="'Bài viết'" :length="dashboard.blog.length"></ItemDashboard>
+            <ItemDashboard :name="'Liên hệ'" :length="1234"></ItemDashboard>
+        </div>
+        <div class="dashboard__content">
+            <p>Khách hàng đặt lịch gần đây</p>
+            <table>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên khách hàng</th>
+                    <th>Số điện thoại</th>
+                    <th>Tên bác sĩ</th>
+                    <th>Thời gian khám</th>
+                    <th>Thời gian đặt</th>
+                </tr>
+                <tr v-for="(item, index) in bookListNew" :key="item.id">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.fullname }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.item }} Thứ 2 31/5</td>
+                    <td>{{ item.created_at }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
+    </Base>
 </template>
-
 <script>
-import Header from './Layout/Header.vue'
-import Menu from './Layout/Menu.vue'
-import Request from '@/Request';
-import { mapState, mapMutations } from 'vuex';
-import { ref, provide } from "vue";
-export default{
-    setup(){
-        let state = ref(true)
-        provide('btn_menu',state)
-        return {state};
-    },
-    computed: {
-        ...mapState(['admin']),
-    },
-    methods: {
-        ...mapMutations(['setadmin']),
-        CheckAuth: function () {
-            if (window.localStorage.getItem("K-admin")) {
-                Request.GetAuth('/admin-information', 'K-admin')
-                    .then((res) => {
-                        this.setadmin(res.data)
-                    })
-                    .catch((err) => {
-                        window.localStorage.removeItem('K-admin')
-                        console.log(err)
-                        this.$router.push({ name: 'admin_login' })
-                    })
+import Base from './pages/Base.vue';
+import ItemDashboard from './ItemComponent/ItemDashboard.vue';
+import Request from '../../Request';
+export default {
+    components: { Base, ItemDashboard },
+    data() {
+        return {
+            dashboard: {
+                user: [],
+                blog: [],
+                bookList: [],
+                bookListNew: [],
             }
-            else {
-                this.$router.push({ name: 'admin_login' })
-            }
-        },
+        }
     },
     mounted() {
-        this.CheckAuth()
-    },
-    components: {
-        Header,
-        Menu
+        (async () => {
+            try {
+                const result = await Request.Get("/dashboard");
+                const bookLists = await Request.Get("/booklist-limit");
+                this.bookListNew = bookLists.data.data;
+                this.dashboard.user = result.data.user.original.data;
+                this.dashboard.blog = result.data.blog.original.data;
+                this.dashboard.bookList = result.data.bookList.original.data;
+            } catch (error) {
+                alert(error);
+            }
+        })();
     }
 }
 </script>
-<style scoped>
-#app {
-    font-family: 'Montserrat', sans-serif;
-    font-family: 'Roboto Condensed', sans-serif;
-}
-
-.container {
-    display: flex;
-}
-
-.Menu {
-    width: 20%;
-}
-
-.content {
-    width: 100%;
-}
-</style>

@@ -14,6 +14,7 @@ const User_Router = [
             { path: '/login', component: Login, name: 'Login' },
             { path: '/register', component: Register, name: 'Register' },
             { path: '/doctors', component: Doctors, name: 'Doctors' },
+            { path: '/blogs', component: Doctors, name: 'Blogs' },
             { path: '/doctor-detail', component: DoctorDetail, name: 'DoctorDetail' },
             { path: '/doctor-form', component: DoctorForm, name: 'DoctorForm' },
         ]

@@ -1,121 +1,47 @@
 <template>
     <div class="wrapper service">
+        <p class="item__post--heading">
+            Xem nhiều nhất
+        </p>
         <div class="row">
             <div class="service__slider">
-                <a href="" class="service__slider--item">
+                <router-link v-for="item in list" :key="item.id" to="" class="service__slider--item">
                     <span class="service__slider--item--sticky">
-                        COVID
+                        MỚI NHẤT
                     </span>
                     <div class="service__slider--item--image">
                         <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
+                            <img :src="urlImage + item.thumbnail" alt="" srcset="">
                         </div>
                     </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
+                    <h3>{{ item.title }}</h3>
+                    <br />
                     <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
-                <a href="" class="service__slider--item">
-                    <span class="service__slider--item--sticky">
-                        COVID
-                    </span>
-                    <div class="service__slider--item--image">
-                        <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
-                        </div>
-                    </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
-                <a href="" class="service__slider--item">
-                    <span class="service__slider--item--sticky">
-                        COVID
-                    </span>
-                    <div class="service__slider--item--image">
-                        <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
-                        </div>
-                    </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
-                <a href="" class="service__slider--item">
-                    <span class="service__slider--item--sticky">
-                        COVID
-                    </span>
-                    <div class="service__slider--item--image">
-                        <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
-                        </div>
-                    </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
-                <a href="" class="service__slider--item">
-                    <span class="service__slider--item--sticky">
-                        COVID
-                    </span>
-                    <div class="service__slider--item--image">
-                        <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
-                        </div>
-                    </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
-                <a href="" class="service__slider--item">
-                    <span class="service__slider--item--sticky">
-                        COVID
-                    </span>
-                    <div class="service__slider--item--image">
-                        <div class="img-wrap">
-                            <img src="https://cdn.bookingcare.vn/fo/2022/01/21/170022-kit-test-nhanh.png" alt=""
-                                srcset="">
-                        </div>
-                    </div>
-                    <h3>Kit Test COVID bằng nước bọt</h3>
-                    <ul>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                        <li>Tầm soát và xác định COVID-19</li>
-                    </ul>
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
-                </a>
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 <script>
-export default {
+import { URL_IMAGE } from '../../../../../Config';
+import Request from '../../../../../Request';
 
+export default {
+    data() {
+        return {
+            urlImage: URL_IMAGE,
+            list: []
+        }
+    },
+    mounted() {
+        (async () => {
+            try {
+                const result = await Request.Get('/blogs');
+                this.list = result.data.data;
+            } catch (error) {
+                alert(error);
+            }
+        })()
+    }
 }
 </script>

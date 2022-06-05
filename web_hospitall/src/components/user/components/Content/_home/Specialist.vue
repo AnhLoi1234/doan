@@ -17,7 +17,7 @@ export default {
     components: { ItemSpecialList },
     data() {
         return {
-            list: []
+            list: [],
         }
     },
     mounted() {

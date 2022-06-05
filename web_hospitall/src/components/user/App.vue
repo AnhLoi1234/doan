@@ -3,6 +3,7 @@
         <Header></Header>
         <Content></Content>
         <Footer></Footer>
+        <ChatPopup />
         <Loading v-if="User_load"></Loading>
     </div>
 </template>
@@ -12,32 +13,35 @@ import Header from './components/layout/Header.vue'
 import Content from './components/layout/Content.vue'
 import Footer from './components/layout/Footer.vue'
 import Loading from './Loading.vue'
-import Request  from '@/Request'
-import { mapState, mapMutations} from 'vuex'
+import Request from '@/Request'
+import { mapState, mapMutations } from 'vuex'
+import ChatPopup from './components/ChatPopup/ChatPopup.vue'
 export default {
     components: {
         Header,
         Footer,
         Content,
-        Loading
+        Loading,
+        ChatPopup
     },
-    computed:{
+    computed: {
         ...mapState(['User_load'])
     },
     methods: {
         ...mapMutations(['setuser'])
     },
-    beforeCreate(){
-        if(window.localStorage.getItem('k-user')){
-        Request.Post('/user-information',)
-        .then((res) =>{
-            // this.setuser(re)
-            console.log(res);
-        })
+    beforeCreate() {
+        if (window.localStorage.getItem('k-user')) {
+            Request.Post('/user-information',)
+                .then((res) => {
+                    // this.setuser(re)
+                    console.log(res);
+                })
         }
 
     }
 }
 </script>
 
-<style src="@/assets/style/main.css"></style>
+<style src="@/assets/style/main.css">
+</style>
