@@ -1,5 +1,6 @@
 <template>
-    <ModalAdmin :title="'Bác sĩ'" :nameButton="edit === 3 ? `${id ? 'Sửa' : 'Thêm'} bác sĩ` : 'Tiếp tục'">
+    <ModalAdmin :onSubmit="onSubmit" :title="'Bác sĩ'" :disabled="edit !== 3"
+        :nameButton="`${id ? 'Sửa' : 'Thêm'} bác sĩ`">
         <div class="specicallist flex-space-between">
             <label v-if="edit !== 1" class="left-0" @click="writeDescription(edit - 1)" for="">
                 Trở về
@@ -18,9 +19,23 @@
                     </InputComponent>
                 </div>
                 <div class="w-50">
-                    <InputComponent placeholder="Nhập tên đăng nhập" type="text" icon="bx bx-user"
+                    <InputComponent placeholder="Nhập tên đăng nhập" type="text" icon="bx bx-user-pin"
                         :errorMessage="username.error ? 'Tên đăng nhập không được trống' : ''" :onChange="onChange"
                         name="username" :value="username.value">
+                    </InputComponent>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-50">
+                    <InputComponent placeholder="Nhập vị trí" type="text" icon="bx bx-leaf"
+                        :errorMessage="position.error ? 'Vị trí không được trống' : ''" :onChange="onChange"
+                        name="position" :value="position.value">
+                    </InputComponent>
+                </div>
+                <div class="w-50">
+                    <InputComponent placeholder="Nhập địa chỉ" type="text" icon="bx bx-location-plus"
+                        :errorMessage="address.error ? 'Địa chỉ không được trống' : ''" :onChange="onChange"
+                        name="address" :value="address.value">
                     </InputComponent>
                 </div>
             </div>
@@ -31,16 +46,20 @@
                     </InputComponent>
                 </div>
                 <div class="w-50">
-                    <InputComponent placeholder="Nhập email" type="text" icon="bx bx-envelope" :errorMessage="!email.error ? '' :
-                email.error === 1 ? 'Email không được trống' :
-                    'Email không đúng định dạng'" :onChange="onChange" name="email" :value="email.value">
+                    <InputComponent placeholder="Nhập mật khẩu" type="password" icon="bx bx-lock-alt"
+                        :errorMessage="password.error ? 'Mật khẩu không được trống' : ''" :onChange="onChange"
+                        name="password">
                     </InputComponent>
                 </div>
             </div>
             <p style="padding-bottom: 1rem;font-size: 1.5rem;font-weight:600;">Chuyên khoa</p>
             <div class="select_admin">
-                <select>
-                    <option value="">Thần kinh</option>
+                <select name="specicallist" v-model="specicallist.value" @change="onChange($event)">
+                    <option value=""></option>
+                    <option v-for="special in specicals" :key="special" :value="special.id"
+                        :selected="specicallist.value">
+                        {{ special.namespecical }}
+                    </option>
                 </select>
                 <span class="bx bx-chevron-down"></span>
             </div>
@@ -56,46 +75,10 @@
             </div>
         </div>
         <div v-if="edit === 2">
-            <VueEditor />
+            <VueEditor v-model="description.value" />
         </div>
         <div v-if="edit === 3">
-            <div class="select-list">
-                <div class="item-select">
-                    Thứ 3 - 05/06
-                </div>
-                <div class="item-select">
-                    Thứ 3 - 05/06
-                </div>
-            </div>
-            <div class="flex">
-                <div class="w-50">
-                    <div class="order__form--input">
-                        <div class="select_admin">
-                            <select>
-                                <option value="">Thần kinh</option>
-                            </select>
-                            <span class="bx bx-chevron-down"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-50">
-                    <InputComponent placeholder="Nhập ngày" type="text" icon="bx bx-calendar"
-                        :errorMessage="nameDoctor.error ? '' : ''" :onChange="onChange" name="nameDoctor">
-                    </InputComponent>
-                </div>
-            </div>
-            <div class="flex">
-                <div class="w-50">
-                    <InputComponent placeholder="Nhập tháng" type="text" icon="bx bx-calendar"
-                        :errorMessage="nameDoctor.error ? '' : ''" :onChange="onChange" name="nameDoctor">
-                    </InputComponent>
-                </div>
-                <div class="specicallist w-50">
-                    <label for="select-file">
-                        Thêm thời gian
-                    </label>
-                </div>
-            </div>
+            <ItemTimeDoctor :id="id" :setCurrent="setCurrent" :currentData="current" />
         </div>
     </ModalAdmin>
 </template>
@@ -104,18 +87,35 @@ import ModalAdmin from "../ModalAdmin.vue";
 import InputComponent from "../InputComponent.vue";
 import { mapMutations, mapState } from "vuex";
 import { VueEditor } from "vue3-editor";
-import { REGEX_EMAIL, REGEX_NUMBER_PHONE } from "../../../Config";
+import { REGEX_EMAIL, REGEX_NUMBER_PHONE, URL_IMAGE } from "../../../Config";
+import Request from "../../../Request";
+import ItemTimeDoctor from "../ItemComponent/ItemTimeDoctor.vue";
 
 export default {
-    props: ['id'],
+    props: ['id', 'setList', 'reset'],
     components: {
         InputComponent,
         ModalAdmin,
-        VueEditor
+        VueEditor,
+        ItemTimeDoctor
     },
     data() {
         return {
+            urlImage: URL_IMAGE,
+            specicals: [],
             edit: 1,
+            position: {
+                value: '',
+                error: false
+            },
+            address: {
+                value: '',
+                error: false
+            },
+            password: {
+                value: '',
+                error: false
+            },
             nameDoctor: {
                 value: '',
                 error: false
@@ -144,7 +144,10 @@ export default {
             image: {
                 value: '',
                 file: null,
-            }
+            },
+            data: null,
+            current: [],
+            backupCurrent: []
         }
     },
     methods: {
@@ -166,6 +169,8 @@ export default {
                     this[event.target.name].error = event.target.value.length === 0 ? 1 :
                         !event.target.value.match(REGEX_EMAIL) ? 2 : false
                     break;
+                case 'password':
+                    break;
                 default:
                     this[event.target.name].error = event.target.value.length === 0
                     break;
@@ -174,6 +179,72 @@ export default {
         onChangeImage: function (event) {
             this.image.value = URL.createObjectURL(event.target.files[0]);
             this.image.file = event.target.files[0];
+        },
+        setCurrent: function (list) {
+            this.current = list;
+        },
+        onSubmit: async function () {
+            try {
+                let image;
+                if (this.image.file) {
+                    if (this.id) {
+                        await Request.Post('/deleteImage', { image: this.data?.avatar })
+                    }
+                    const formData = new FormData();
+                    formData.append('image', this.image.file);
+                    image = await Request.Post('/uploadImage', formData);
+                }
+                const doctor = await Request[this.id ? 'Put' : 'Post']('/doctors', {
+                    idadmin: this.id,
+                    fullname: this.nameDoctor.value,
+                    password: this.password.value,
+                    updatePassword: this.password.value.length === 0 ? 'false' : 'true',
+                    avatar: image ? image.data.data : this.image.value.replace(URL_IMAGE, ''),
+                    phone: this.phone.value,
+                    role: 1,
+                    username: this.username.value,
+                    idspecicallist: this.specicallist.value,
+                    address: this.address.value,
+                    position: this.position.value,
+                    description: this.description.value
+                });
+                if (this.id) {
+                    let dataNew = [];
+                    let dataOld = [];
+                    for (let i = 0; i < this.backupCurrent.length; i++) {
+                        const item = this.backupCurrent[i];
+                        const index = [...this.current].findIndex(dt => dt.day === item.day && dt.month === item.month &&
+                            dt.year === item.year);
+                        if (index === -1) {
+                            dataOld = [...dataOld, item];
+                        }
+                    }
+                    for (let i = 0; i < this.current.length; i++) {
+                        const item = this.current[i];
+                        const index = [...this.backupCurrent].findIndex(dt => dt.day === item.day && dt.month === item.month &&
+                            dt.year === item.year);
+                        if (index === -1) {
+                            dataNew = [...dataNew, item];
+                        }
+                    }
+                    for (let index = 0; index < dataOld.length; index++) {
+                        await Request.Post('/timedoctor-delete', dataOld[index]);
+                    }
+                    for (let index = 0; index < dataNew.length; index++) {
+                        await Request.Post('/timedoctors', { ...dataNew[index], idadmin: this.data.info.idadmin });
+                    }
+                }
+                else {
+                    for (let index = 0; index < this.current.length; index++) {
+                        await Request.Post('/timedoctors', { ...this.current[index], idadmin: doctor.data.data.idadmin });
+                    }
+                }
+                this.setList && this.setList(doctor.data.data);
+                this.reset && this.reset();
+                return true;
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     computed: {
@@ -181,7 +252,31 @@ export default {
     },
     mounted() {
         (async () => {
-            this.setLoading(false);
+            try {
+                this.setLoading(true);
+                let result = await Request.Get('/specicallists');
+                this.specicals = result.data.data;
+                this.setLoading(false);
+                if (this.id) {
+                    result = await Request.Get(`/doctors/${this.id}`);
+                    const data = result.data.data;
+                    this.data = data;
+                    this.username.value = data.info.username;
+                    this.position.value = data.info.position;
+                    this.address.value = data.info.address;
+                    this.image.value = this.urlImage + data.info.avatar;
+                    this.phone.value = data.info.sdt;
+                    this.specicallist.value = data.info.idspecicallist;
+                    this.nameDoctor.value = data.info.name;
+                    this.description.value = data.info.description_admin;
+                }
+                result = await Request.Get(`/timedoctors/${this.id}`);
+                this.current = result.data.data;
+                this.backupCurrent = (result.data.data);
+                return true;
+            } catch (error) {
+                alert(error);
+            }
         })();
     }
 

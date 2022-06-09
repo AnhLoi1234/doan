@@ -965,6 +965,11 @@ select {
 
 .list-option {
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 9999999;
   height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -1115,6 +1120,7 @@ select {
 }
 
 .order__item--left--image {
+  cursor: pointer;
   width: 16rem;
   height: 16rem;
   border-radius: 100rem;
@@ -1136,6 +1142,7 @@ select {
 }
 
 .order__item--left--content h3 {
+  cursor: pointer;
   color: var(--color);
   font-size: 1.8rem;
   margin-bottom: 1rem;

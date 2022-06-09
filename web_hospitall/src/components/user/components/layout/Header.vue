@@ -27,7 +27,7 @@
                     <p>Tìm bác sỹ theo chuyên khoa</p>
                 </li>
             </ul>
-            <div class="header__support" @click="this.$router.push({ name: (user ? '' : 'Login') })">
+            <div class="header__support" @click="this.$router.push({ name: (user ? 'Profile' : 'Login') })">
                 <i class='bx bxs-user' style='color:#318c9c'></i>
                 <span>{{ user ? user.fullname : "Đăng nhập" }}</span>
             </div>
@@ -39,21 +39,15 @@
         <div class="header__menu" :class="isActive ? 'active' : ''">
             <ul>
                 <li>
-                    <router-link :to="{
+                    <router-link @click="isActive = !isActive" :to="{
                         name: 'User_Home'
                     }">
                         Trang chủ
                     </router-link>
                 </li>
+
                 <li>
-                    <router-link :to="{
-                        name: 'Doctors'
-                    }">
-                        Bác sĩ
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{
+                    <router-link @click="isActive = !isActive" :to="{
                         name: 'Blogs'
                     }">
                         Bài viết
@@ -66,7 +60,7 @@
     </header>
 </template>
 <script>
-import { mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
     data() {
         return {
@@ -76,13 +70,14 @@ export default {
     computed: {
         ...mapState(['user'])
     },
-    methods:{
+    methods: {
         ...mapMutations(['setuser']),
-        logout: function(){
+        logout: function () {
             let auth = confirm('Bạn có muốn đăng xuất?')
-            if(auth) {
+            if (auth) {
                 window.localStorage.removeItem('K-user')
                 this.setuser(null)
+                this.$router.push({ name: 'Login' });
             }
         }
     }

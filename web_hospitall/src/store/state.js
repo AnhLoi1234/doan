@@ -1,3 +1,5 @@
+import socketIOClient from "socket.io-client";
+
 export default {
     admin: null,
     user: null,
@@ -12,5 +14,11 @@ export default {
     modal: {
         data: null,
         loading: true,
-    }
+        info: null
+    },
+    modalUser: {
+        data: null,
+        loading: false
+    },
+    socket: socketIOClient.connect('http://192.168.0.118:4444/')
 }

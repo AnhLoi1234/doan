@@ -17,6 +17,7 @@ class CreateMBookListsTable extends Migration
             $table->increments('id');
             $table->integer('iduser')->index()->unsigned();
             $table->integer('idtimebook')->index()->unsigned();
+            $table->integer('idtimedoctor')->index()->unsigned();
             $table->date('datebook');
             $table->integer('iddoctor');
             $table->string('description');
@@ -25,13 +26,16 @@ class CreateMBookListsTable extends Migration
             $table->string('fullname');
             $table->string('gender');
             $table->string('phone');
+            $table->string('email');
             $table->date('birthday');
             $table->integer('dayofweek');
             $table->string('address');
+            $table->string('type_booklist');
             $table->timestamps();
 
             $table->foreign('iduser')->references('id')->on('m_users')->onDelete('cascade');
             $table->foreign('idtimebook')->references('id')->on('m_time_books')->onDelete('cascade');
+            $table->foreign('idtimedoctor')->references('id')->on('m_time_doctors')->onDelete('cascade');
         });
     }
 

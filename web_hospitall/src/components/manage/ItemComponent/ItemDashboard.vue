@@ -5,7 +5,9 @@
             <span class="bx bx-user"></span>
         </p>
         <div class="dashboard__item--length">
-            {{ length }}
+            <span :class="length === 0 || length ? '' : 'bx bx-loader loading'">
+                {{ length === 0 || length ? length : '' }}
+            </span>
         </div>
     </div>
 </template>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\M_specical_list;
+use App\Utils\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -25,6 +26,14 @@ class C_specical_list extends Controller
         return response()->json(['data' => $result]);
     }
 
+    public function getSpecicalListBySlug(Request $request)
+    {
+        $mSpecicalList = DB::select("SELECT * FROM m_specical_lists WHERE slugspecical = ?", [$request->slug]);
+        return response()->json([
+            'data' => sizeof($mSpecicalList) === 0 ? null : $mSpecicalList[0]
+        ]);
+    }
+
     public function getSpecicalListById(Request $request)
     {
         $mSpecicalList = DB::select("SELECT * FROM m_specical_lists WHERE id = ?", [$request->id]);
@@ -38,6 +47,8 @@ class C_specical_list extends Controller
         $mSpecicalList = new M_specical_list;
         $mSpecicalList->namespecical = $request->namespecical;
         $mSpecicalList->thumbnail = $request->thumbnail;
+        $mSpecicalList->description_specical = $request->description;
+        $mSpecicalList->slugspecical = (new Utils)->createSlug($request->namespecical);
         $mSpecicalList->save();
         return response()->json([
             'data' => $mSpecicalList
@@ -49,7 +60,9 @@ class C_specical_list extends Controller
     {
         DB::table('m_specical_lists')->where('id', $request->id)->update([
             'namespecical' => $request->namespecical,
-            'thumbnail' => $request->thumbnail
+            'thumbnail' => $request->thumbnail,
+            'description_specical' => $request->description,
+            'slugspecical' => (new Utils)->createSlug($request->namespecical)
         ]);
         $res = DB::select("SELECT * FROM m_specical_lists WHERE id = ? ", [$request->id]);
         // if (sizeof($res) === 0) {

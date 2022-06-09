@@ -3,6 +3,17 @@
         <InputComponent :placeholder="'Nhập tiêu đề'" type="text" name="title" :icon="'bx bx-user'" :onChange="onChange"
             :value="title.value">
         </InputComponent>
+        <div class="select_admin">
+            <select @change="onChange($event)" name="typeBlog">
+                <option value="0">
+                    Bài viết thông thường
+                </option>
+                <option value="1">
+                    Bài viết công nghệ
+                </option>
+            </select>
+            <span class="bx bx-chevron-down"></span>
+        </div>
         <br />
         <div class="specicallist">
             <img :src="image.value || 'https:\\via.placeholder.com/200x200'"
@@ -48,7 +59,11 @@ export default {
                 file: null
             },
             data: null,
-            content: ''
+            content: '',
+            typeBlog: {
+                value: "0",
+                error: false
+            }
         }
     },
     methods: {
@@ -80,7 +95,8 @@ export default {
                     id: this.id,
                     thumbnail: image ? image.data.data : this.image.value.replace(URL_IMAGE, ''),
                     title: this.title.value,
-                    content: this.content
+                    content: this.content,
+                    typeBlog: this.typeBlog.value
                 });
                 this.setList(result.data.data);
                 this.reset();

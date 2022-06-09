@@ -5,7 +5,11 @@
         </p>
         <div class="row">
             <div class="item__guide">
-                <router-link to="" v-for="item in list" :key="item.id" class="item__guide--item">
+                <router-link :to="{
+                    name: 'BlogDetail', params: {
+                        slug: item.slug_blog
+                    }
+                }" v-for="item in list" :key="item.id" class="item__guide--item">
                     <div class="item__guide--item--image col-4 img-wrap"
                         :style="{ background: `url(${urlImage + item.thumbnail})` }">
                     </div>
@@ -35,7 +39,7 @@ export default {
     mounted() {
         (async () => {
             try {
-                const result = await Request.Get('/blogs');
+                const result = await Request.Get('/blog-user/0');
                 this.list = result.data.data;
             } catch (error) {
                 alert(error);

@@ -10,21 +10,23 @@
                         <div v-if="this.$route.name !== 'manage' && this.$route.name !== 'chats'"
                             class="admin_value__top">
                             <ul>
-                                <li v-if="this.$route.name !== 'booklists'" @click="openModal()" class="orange">Thêm
+                                <li v-if="this.$route.name !== 'booklists' && this.$route.name !== 'users'"
+                                    @click="openModal()" class="orange">Thêm
                                 </li>
                             </ul>
-                            <input type="text" placeholder="Type" @input="onInput($event)">
+                            <input type="text" placeholder="Tìm kiếm thông tin" @input="onInput($event)">
                         </div>
                         <br />
                         <slot></slot>
                     </div>
                 </div>
                 <div v-else class="admin__content">
-                    <slot></slot>
+                    <slot v-if="!loading"></slot>
                 </div>
             </div>
         </div>
     </div>
+    <ModalRequestJoin v-if="modalShow" :handleAccept="handleAccept" :data="data"></ModalRequestJoin>
 </template>
 
 <script>
@@ -33,16 +35,25 @@ import Menu from '../Layout/Menu.vue';
 import Request from '@/Request';
 import { mapState, mapMutations } from 'vuex';
 import { ref, provide } from "vue";
+import ModalRequestJoin from "../modal/ModalRequestJoin.vue";
+import Admin_Router from "../../../Router/Router_admin";
 export default {
     props: ['onInput'],
-    components: { Header, Menu },
+    components: { Header, Menu, ModalRequestJoin },
     setup() {
         let state = ref(true)
         provide('btn_menu', state)
         return { state };
     },
+    data() {
+        return {
+            loading: true,
+            modalShow: false,
+            data: null
+        }
+    },
     computed: {
-        ...mapState(['admin', 'modal']),
+        ...mapState(['admin', 'modal', 'socket']),
     },
     methods: {
         ...mapMutations(['setadmin', 'setModal']),
@@ -53,11 +64,18 @@ export default {
             if (window.localStorage.getItem("K-admin")) {
                 Request.GetAuth('/admin-information', 'K-admin')
                     .then((res) => {
-                        this.setadmin(res.data)
+                        this.setadmin(res.data);
+                        if (res.data) {
+                            const index = Admin_Router.findIndex(dt => (dt.role === 'all' || dt.role == res.data.role) && this.$route.name === dt.name);
+                            if (index === -1) {
+                                alert('Không được phép truy cập')
+                                this.$router.push({ name: 'manage' })
+                            }
+                            this.loading = false;
+                        }
                     })
-                    .catch((err) => {
-                        window.localStorage.removeItem('K-admin')
-                        console.log(err)
+                    .catch(() => {
+                        window.localStorage.removeItem('K-admin');
                         this.$router.push({ name: 'admin_login' })
                     })
             }
@@ -65,9 +83,22 @@ export default {
                 this.$router.push({ name: 'admin_login' })
             }
         },
+        handleAccept: function (data) {
+            this.socket.emit('acceptJoin', { ... this.data, groupChat: data });
+            this.$router.push({ name: 'chats' });
+            this.modalShow = false;
+        }
+    },
+    watch: {
+        admin: function (newData) {
+            this.socket.on(`_requestJoin.${newData?.id}`, (data) => {
+                this.modalShow = true;
+                this.data = data;
+            })
+        }
     },
     mounted() {
-        this.CheckAuth()
+        this.CheckAuth();
     },
 }
 </script>

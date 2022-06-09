@@ -25,7 +25,7 @@ class Rq_resgister extends FormRequest
     {
         return [
             'fullname'=>'required|max:255',
-            'gender'=>'required|numeric|max:1',
+            'gender'=>'required',
             'password'=>'required|min:6',
             'phone'=>'required|numeric',
             'email'=>'required|email|unique:m_users',
@@ -38,8 +38,6 @@ class Rq_resgister extends FormRequest
             'fullname.required' => 'Tên người dùng là bắt buộc',
             'fullname.max'=>'Tối thiểu 255 ký tự',
             'gender.required' => 'Vui lòng chọn giới tính',
-            'gender.numeric'=>'Dữ liệu không hợp lệ',
-            'gender.max'=>'Lỗi ở giới tính',
             'phone.required'=>'Vui lòng nhập số điện thoại',
             'phone.numeric'=>'Số điện thoại không hợp lệ',
             'email.required'=>'Vui lòng nhập email',

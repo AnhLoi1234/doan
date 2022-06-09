@@ -32,13 +32,14 @@ export default {
     },
     beforeCreate() {
         if (window.localStorage.getItem('K-user')) {
-            Request.GetAuth('/user-information','K-user')
+            Request.GetAuth('/user-information', 'K-user')
                 .then((res) => {
                     // this.setuser(re)
                     this.setuser(res.data)
                 })
         }
-    }
+    },
+
 }
 </script>
 

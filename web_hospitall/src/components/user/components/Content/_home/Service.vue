@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper service">
         <p class="item__post--heading">
-            Xem nhiều nhất
+            Công nghệ y học
         </p>
         <div class="row">
             <div class="service__slider">
@@ -14,9 +14,13 @@
                             <img :src="urlImage + item.thumbnail" alt="" srcset="">
                         </div>
                     </div>
-                    <h3>{{ item.title }}</h3>
-                    <br />
-                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p>
+                    <h3 @click="handleClick(item)">{{ item.title }}</h3>
+                    <!-- <ul>
+                        <li>Tầm soát và xác định COVID-19</li>
+                        <li>Tầm soát và xác định COVID-19</li>
+                        <li>Tầm soát và xác định COVID-19</li>
+                    </ul>
+                    <p>XEM CHI TIẾT <span class="bx bx-chevrons-right"></span></p> -->
                 </router-link>
             </div>
         </div>
@@ -33,10 +37,19 @@ export default {
             list: []
         }
     },
+    methods: {
+        handleClick: function (item) {
+            this.$router.push({
+                name: 'BlogDetail', params: {
+                    slug: item.slug_blog
+                }
+            })
+        }
+    },
     mounted() {
         (async () => {
             try {
-                const result = await Request.Get('/blogs');
+                const result = await Request.Get('/blog-user/1');
                 this.list = result.data.data;
             } catch (error) {
                 alert(error);

@@ -17,6 +17,8 @@ class CreateMSpecicalListsTable extends Migration
             $table->increments('id');
             $table->string('namespecical');
             $table->string('thumbnail');
+            $table->string('description_specical');
+            $table->string('slugspecical');
             $table->timestamps();
         });
     }

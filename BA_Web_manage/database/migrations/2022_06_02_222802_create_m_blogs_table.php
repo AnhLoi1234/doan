@@ -18,6 +18,8 @@ class CreateMBlogsTable extends Migration
             $table->string('title');
             $table->integer('view');
             $table->string('thumbnail');
+            $table->integer('type_blog');
+            $table->string('slug_blog');
             $table->string('content');
             $table->timestamps();
         });

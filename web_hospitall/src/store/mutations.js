@@ -13,5 +13,8 @@ export default {
     },
     setModal(state, data) {
         state.modal = data;
+    },
+    setModalUser(state, data) {
+        state.modalUser = data;
     }
 }

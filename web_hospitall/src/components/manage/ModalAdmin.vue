@@ -9,7 +9,8 @@
                 <br />
                 <slot></slot>
                 <br />
-                <button @click="submitForm" class="order__form--button"><span
+                <button :disabled="disabled || disabledButton ? true : false" @click="submitForm"
+                    class="order__form--button" :class="disabled || disabledButton ? 'disabled' : ''"><span
                         :class="loadingButton ? 'bx bx-loader loading' : ''">
                         {{ loadingButton ? '' : nameButton }}</span></button>
             </div>
@@ -24,13 +25,14 @@
 import { mapMutations, mapState } from 'vuex';
 
 export default {
-    props: ['title', 'nameButton', 'onSubmit', 'reset'],
+    props: ['title', 'nameButton', 'onSubmit', 'reset', 'disabled'],
     computed: {
         ...mapState(["modal"])
     },
     data() {
         return {
             loadingButton: false,
+            disabledButton: false
         }
     },
     methods: {
@@ -42,13 +44,21 @@ export default {
             }
         },
         submitForm: async function () {
+            this.disabledButton = true;
             this.loadingButton = true;
             const result = await this.onSubmit();
             if (result) {
                 this.closeModal();
+                this.loadingButton = false;
+                this.disabledButton = false;
             }
-            this.loadingButton = false;
         }
     }
 }
 </script>
+<style>
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>

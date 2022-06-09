@@ -13,6 +13,10 @@
                 Chọn ảnh chuyên khoa
             </label>
         </div>
+        <br />
+        <div>
+            <VueEditor v-model="description"></VueEditor>
+        </div>
     </ModalAdmin>
 </template>
 <script>
@@ -21,12 +25,13 @@ import InputComponent from "../InputComponent.vue";
 import { mapMutations, mapState } from "vuex";
 import Request from "../../../Request";
 import { URL_IMAGE } from "../../../Config";
-
+import { VueEditor } from "vue3-editor";
 export default {
     props: ['list', 'setList', 'id', 'reset'],
     components: {
         ModalAdmin,
-        InputComponent
+        InputComponent,
+        VueEditor
     },
     computed: {
         ...mapState(['modal'])
@@ -42,7 +47,8 @@ export default {
                 error: false,
                 file: null
             },
-            data: null
+            data: null,
+            description: ""
         }
     },
     methods: {
@@ -72,7 +78,8 @@ export default {
                 const result = await Request[this.id ? 'Put' : 'Post']('/specicallists', {
                     id: this.id,
                     namespecical: this.nameSpecical.value,
-                    thumbnail: image ? image.data.data : this.image.value.replace(URL_IMAGE, '')
+                    thumbnail: image ? image.data.data : this.image.value.replace(URL_IMAGE, ''),
+                    description: this.description
                 });
                 this.setList(result.data.data);
                 this.reset();
@@ -95,6 +102,7 @@ export default {
                     this.data = data;
                     this.nameSpecical.value = data.namespecical;
                     this.image.value = URL_IMAGE + data.thumbnail;
+                    this.description = data.description_specical;
                 }
                 this.setLoading(false);
             } catch (error) {

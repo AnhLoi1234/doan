@@ -16,33 +16,51 @@
                 <div class="admin__header--right">
                     <span class="bx bx-bell box-icon"></span>
                     <div>
-                        <img src="https://berrydashboard.io/static/media/user-round.13b5a31b.svg" alt="" srcset="">
-                        <span class="bx bx-user-pin"></span>
-                        <span class="bx bx-log-out hidden"></span>
+                        <img :src="admin?.role == 0 ? 'https://berrydashboard.io/static/media/user-round.13b5a31b.svg' : urlImage + 'avatar-default.jpeg'"
+                            alt="" srcset="">
+                        <span @click="handleInfo" v-if="admin?.role == 1" class="bx bx-user-pin"></span>
+                        <span @click="logOut" class="bx bx-log-out"></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <ModalDoctor v-if="admin?.role == 1 && modal.info && modal.data" :id="admin?.id"></ModalDoctor>
 </template>
 <script>
-import {mapState} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { inject } from 'vue'
+import { URL_IMAGE } from '../../../Config';
+import ModalDoctor from '../modal/ModalDoctor.vue';
 export default {
-    setup(){
+    components: {
+        ModalDoctor
+    },
+    setup() {
         const slideMenu = inject('btn_menu');
-        return {slideMenu};
+        return { slideMenu };
     },
-    computed:{
-        ...mapState(['admin']),
+    computed: {
+        ...mapState(['admin', 'modal']),
     },
-    mounted() {
-        console.log(this.$store.state.admin);
+    data() {
+        return {
+            urlImage: URL_IMAGE
+        }
     },
-    methods:{
-        toggleMenu:function(){
+    methods: {
+        ...mapMutations(['setadmin', 'setModal']),
+        toggleMenu: function () {
             // this.slideMenu.classList.toggle('active');
-            this.slideMenu =! this.slideMenu
+            this.slideMenu = !this.slideMenu
+        },
+        handleInfo: function () {
+            this.setModal({ ...this.modal, info: true, data: true });
+        },
+        logOut: function () {
+            this.setadmin(null);
+            window.localStorage.removeItem('K-admin');
+            this.$router.push({ name: 'admin_login' })
         }
     }
 }

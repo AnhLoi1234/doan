@@ -9,14 +9,14 @@ import BookList from '../components/manage/pages/BookList';
 import Chat from '../components/manage/pages/Chat';
 
 const Admin_Router = [
-    { path: '/admin/login', component: Adminlogin, name: 'admin_login' },
-    { path: '/admin/manage', component: Manage, name: 'manage' },
-    { path: '/admin/users', component: User, name: 'users' },
-    { path: '/admin/doctors', component: Doctors, name: 'doctors' },
-    { path: '/admin/specicallists', component: SpecicalList, name: 'specicallists' },
-    { path: '/admin/blogs', component: Blog, name: 'blogs' },
-    { path: '/admin/timebooks', component: TimeBook, name: 'timebooks' },
-    { path: '/admin/booklists', component: BookList, name: 'booklists' },
-    { path: '/admin/chats', component: Chat, name: 'chats' },
+    { path: '/admin/login', component: Adminlogin, name: 'admin_login', role: 'all' },
+    { path: '/admin/manage', component: Manage, name: 'manage', role: 'all' },
+    { path: '/admin/users', component: User, name: 'users', role: 0 },
+    { path: '/admin/doctors', component: Doctors, name: 'doctors', role: 0 },
+    { path: '/admin/specicallists', component: SpecicalList, name: 'specicallists', role: 0 },
+    { path: '/admin/blogs', component: Blog, name: 'blogs', role: 'all' },
+    { path: '/admin/timebooks', component: TimeBook, name: 'timebooks', role: 0 },
+    { path: '/admin/booklists', component: BookList, name: 'booklists', role: 'all' },
+    { path: '/admin/chats', component: Chat, name: 'chats', role: 1 },
 ]
 export default (Admin_Router)

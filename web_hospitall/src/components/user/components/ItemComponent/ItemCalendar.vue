@@ -1,5 +1,5 @@
 <template>
-    <div class="order__item--right--calendar">
+    <div v-if="doctor?.dates?.length !== 0" class="order__item--right--calendar">
         <span @click="handleShowPopup()">{{ selected?.name }}</span>
         <span class="bx bx-chevron-down"></span>
         <ul :class="{ 'active': isShow }">
@@ -12,7 +12,7 @@
         <i class='bx bxs-calendar'></i>
         <span>LỊCH KHÁM</span>
     </div>
-    <div class="order__item--right--list-calendar">
+    <div class="order__item--right--list-calendar" :class="doctor?.dates?.length !== 0 ? '' : 'disabled'">
         <div @click="clickItemTime(time, doctor, selected)" v-for="time in times" v-bind:key="time.id"
             class="order__item--right--item" :class="[(() => {
                 let index = [...doctor.books].findIndex(dt => dt.idtimebook === time.id &&
@@ -36,23 +36,35 @@ export default {
             selected: this.doctor.dates.length > 0 ? this.doctor.dates[0] : {},
         };
     },
-    props: ['times', 'doctor', 'isDetail', 'time_'],
+    props: ['times', 'doctor', 'isDetail', 'time_', 'disabled'],
     computed: {
         ...mapState(['book', 'user'])
     },
     methods: {
         ...mapMutations(["setBook"]),
         clickItemTime: function (time, doctor, date) {
-            if (time && !this.isDetail) {
-                this.setBook({
-                    time,
-                    doctor,
-                    date
-                })
-                this.$router.push({ name: "DoctorDetail" })
+            if (this.doctor?.dates?.length === 0) {
+                return;
             }
-            else {
-                this.setBook({ ...this.book, time, date });
+            let index = [...doctor.books].findIndex(dt => dt.idtimebook === time.id &&
+                Number(dt.datebook.split('-')[1]) === this.selected.month && Number(dt.datebook.split('-')[2]) === this.selected.day);
+            if (index === -1) {
+                if (time && !this.isDetail) {
+                    this.setBook({
+                        time,
+                        doctor,
+                        date
+                    })
+                    this.$router.push({
+                        name: "DoctorDetail", params: {
+                            slug: this.$route.params.slug,
+                            id: doctor.info.idadmin
+                        }
+                    })
+                }
+                else {
+                    this.setBook({ ...this.book, time, date });
+                }
             }
         },
         handleSelectedCalendar: function (calendar) {
@@ -65,7 +77,7 @@ export default {
     },
     mounted() {
         if (this.isDetail) {
-            this.selected = this.book.date;
+            this.selected = this.doctor?.dates?.length > 0 ? this.doctor.dates[0] : '';
         }
     }
 }

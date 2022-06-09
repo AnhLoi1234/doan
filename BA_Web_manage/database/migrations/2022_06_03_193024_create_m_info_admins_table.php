@@ -19,7 +19,7 @@ class CreateMInfoAdminsTable extends Migration
             $table->integer('idadmin')->index()->unsigned();
             $table->string('address');
             $table->string('position');
-            $table->string('description');
+            $table->string('description_admin');
             $table->string('avatar');
             $table->timestamps();
 

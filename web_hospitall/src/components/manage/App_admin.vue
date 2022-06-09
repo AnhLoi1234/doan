@@ -2,10 +2,10 @@
     <Base>
     <div class="dashboard">
         <div class="dashboard__top">
-            <ItemDashboard :name="'Khách hàng'" :length="dashboard.user.length"></ItemDashboard>
-            <ItemDashboard :name="'Lịch đặt'" :length="dashboard.bookList.length"></ItemDashboard>
-            <ItemDashboard :name="'Bài viết'" :length="dashboard.blog.length"></ItemDashboard>
-            <ItemDashboard :name="'Liên hệ'" :length="1234"></ItemDashboard>
+            <ItemDashboard :name="'Khách hàng'" :length="dashboard.user?.length"></ItemDashboard>
+            <ItemDashboard :name="'Lịch đặt'" :length="dashboard.bookList?.length"></ItemDashboard>
+            <ItemDashboard :name="'Bài viết'" :length="dashboard.blog?.length"></ItemDashboard>
+            <ItemDashboard :name="'Liên hệ'" :length="dashboard.groupChat?.length"></ItemDashboard>
         </div>
         <div class="dashboard__content">
             <p>Khách hàng đặt lịch gần đây</p>
@@ -40,9 +40,10 @@ export default {
     data() {
         return {
             dashboard: {
-                user: [],
-                blog: [],
-                bookList: [],
+                user: null,
+                blog: null,
+                bookList: null,
+                groupChat: null,
                 bookListNew: [],
             }
         }
@@ -56,6 +57,7 @@ export default {
                 this.dashboard.user = result.data.user.original.data;
                 this.dashboard.blog = result.data.blog.original.data;
                 this.dashboard.bookList = result.data.bookList.original.data;
+                this.dashboard.groupChat = result.data.groupChat.original.data;
             } catch (error) {
                 alert(error);
             }

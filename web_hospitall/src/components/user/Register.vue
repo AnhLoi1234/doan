@@ -21,9 +21,9 @@
                 <span class="bx bx-male-female"></span>
                 <select :class="{'error':messageError.gender}" v-model="account.gender" name="" id="">
                     <option value="" disabled>Chọn giới tính</option>
-                    <option value="0">Nam</option>
-                    <option value="1">Nữ</option>
-                    <option value="2">Khác</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                    <option value="Khác">Khác</option>
                 </select>
                 <p>{{messageError.gender}}</p>
             </div>

@@ -91,10 +91,10 @@ export default {
     },
     data() {
         return {
-            urlImage: URL_IMAGE,
-            id: null,
             list: [],
             loading: true,
+            id: null,
+            urlImage: URL_IMAGE,
             loadingColumn: -1,
             timeOut: null,
             counter: 0

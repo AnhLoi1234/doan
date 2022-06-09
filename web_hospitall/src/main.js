@@ -7,11 +7,11 @@ import VueAxios from 'vue-axios'
 import store from './store/index'
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
-  });
+  history: createWebHistory(),
+  routes,
+});
 
 const app = createApp(App)
-app.use(VueAxios, axios) 
+app.use(VueAxios, axios)
 app.use(store)
 app.use(router).mount('#app')
