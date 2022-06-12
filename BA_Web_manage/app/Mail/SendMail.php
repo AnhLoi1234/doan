@@ -12,15 +12,17 @@ class SendMail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
+    public $view;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data, $view)
     {
         $this->data = $data;
+        $this->view = $view;
     }
 
     /**
@@ -30,6 +32,6 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('MH CARE')->view('Confirm');
+        return $this->subject('MH CARE')->view($this->view);
     }
 }

@@ -106,6 +106,8 @@ class C_book_list extends Controller
     public function updateStatus(Request $request)
     {
         DB::update('UPDATE m_book_lists SET status = ? WHERE id = ?', [$request->status, $request->id]);
+
+        //
         $result = DB::select("SELECT * , m_book_lists.fullname as 'fullname_main' , m_book_lists.phone 
         as 'phone_main', m_book_lists.email as 'email_main' , m_book_lists.created_at as 'created_at_main' ,
         m__admins.name as 'name_doctor' , m_info_admins.avatar as 'avatar_doctor' , m_book_lists.gender as 'gender_main' ,
@@ -117,6 +119,15 @@ class C_book_list extends Controller
         m_book_lists.idtimebook = m_time_books.id INNER JOIN m_time_doctors ON 
         m_book_lists.idtimedoctor = m_time_doctors.id INNER JOIN m_users ON m_users.id = m_book_lists.iduser 
         WHERE m_book_lists.id = ? ", [$request->id]);
-        return response()->json(['data' => sizeof($result) === 0 ? null : $result[0], 'status' => true]);
+        $result = sizeof($result) === 0 ? null : $result[0];
+        if ($result) {
+            if($result->status_book_list == 1){
+                \Mail::to($result->email_main)->send(new \App\Mail\SendMail($result,'Notify'));
+            }
+            if($result->status_book_list == -1){
+                \Mail::to($result->email_main)->send(new \App\Mail\SendMail($result,'Cancel'));
+            }
+            return response()->json(['data' => $result, 'status' => true]);
+        }
     }
 }

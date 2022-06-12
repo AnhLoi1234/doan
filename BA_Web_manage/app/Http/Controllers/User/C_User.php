@@ -22,7 +22,7 @@ class C_User extends Controller
         $data = [
             'number' => $Check
         ];
-        \Mail::to($request->email)->send(new \App\Mail\SendMail($data));
+        \Mail::to($request->email)->send(new \App\Mail\SendMail($data, 'Confirm'));
         M_confirm::whereNotNull('id')->delete();
 
         $confirm = new M_confirm;
