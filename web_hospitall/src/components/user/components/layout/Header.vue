@@ -45,7 +45,23 @@
                         Trang chủ
                     </router-link>
                 </li>
-
+                <li v-if="user">
+                    <router-link @click="isActive = !isActive" :to="{
+                        name: 'Profile',
+                        params: {
+                            id: this.user.id
+                        }
+                    }">
+                        Cập nhật thông tin cá nhân
+                    </router-link>
+                </li>
+                <li>
+                    <router-link @click="isActive = !isActive" :to="{
+                        name: 'DoctorList'
+                    }">
+                        Bác sĩ
+                    </router-link>
+                </li>
                 <li>
                     <router-link @click="isActive = !isActive" :to="{
                         name: 'Blogs'

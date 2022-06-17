@@ -51,6 +51,7 @@ export default {
             if (index === -1) {
                 if (time && !this.isDetail) {
                     this.setBook({
+                        ...this.book,
                         time,
                         doctor,
                         date

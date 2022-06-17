@@ -2,8 +2,7 @@
     <div class="reply__item">
         <div class="reply__item--top">
             <a href="">{{ item.fullname }}</a>
-            <!-- <span class="bx bxs-check-circle"></span>
-            <span>Đã khám ngày 06/04/2022</span> -->
+            <span> {{ moment(item.created_at).format('hh:mm:ss DD/MM/Y') }}</span>
         </div>
         <p class="reply__item--content">
             {{ item.content_comment }}
@@ -12,7 +11,14 @@
     <hr>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
-    props: ['item']
+    props: ['item'],
+    data() {
+        return {
+            moment: moment
+        }
+    }
 }
 </script>

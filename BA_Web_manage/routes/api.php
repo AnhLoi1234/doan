@@ -36,6 +36,7 @@ Route::post('/doctors', 'Admin\C_Admin@addDoctor');
 Route::put('/doctors', 'Admin\C_Admin@updateDoctor');
 Route::get('/doctors/{id}', 'Admin\C_Admin@getDoctorById');
 Route::delete('/doctors/{id}', 'Admin\C_Admin@deleteDoctor');
+Route::put('/update-online', 'Admin\C_Admin@updateOnline');
 
 //user
 Route::post('user-search', 'User\C_User@searchUser');
@@ -45,6 +46,7 @@ Route::post('/user-login', 'User\C_User@login');
 Route::post('/user-avatar', 'User\C_User@updateAvatar');
 Route::post('/user-status', 'User\C_User@updateStatus');
 Route::get('/user-information', 'User\C_User@userAuth')->middleware(['auth:api_user', 'scopes:user']);
+Route::get("/user-limit", 'User\C_User@getUserLimit');
 Route::get("/users", 'User\C_User@getAllUser');
 Route::put("/users", 'User\C_User@updateUser');
 
@@ -70,6 +72,8 @@ Route::get('/booklists', 'C_book_list@getAllBookList');
 Route::get('/booklist-limit', 'C_book_list@getBookListLimit');
 Route::get('/booklists/{id}', 'C_book_list@getBookListById');
 Route::get('/booklist-user/{iduser}', 'C_book_list@getBookListByIdUser');
+Route::get('/booklist-doctor/{iddoctor}', 'C_book_list@getBookListByIdDoctor');
+Route::post('/booklist-search', 'C_book_list@searchBookList');
 Route::post('/booklists', 'C_book_list@addBookList');
 Route::put('/booklists', 'C_book_list@addBookList');
 Route::delete('/booklists', 'C_book_list@deleteBookList');

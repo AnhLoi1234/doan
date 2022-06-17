@@ -9,10 +9,10 @@
                 <br />
                 <slot></slot>
                 <br />
-                <button :disabled="disabled || disabledButton ? true : false" @click="submitForm"
-                    class="order__form--button" :class="disabled || disabledButton ? 'disabled' : ''"><span
-                        :class="loadingButton ? 'bx bx-loader loading' : ''">
-                        {{ loadingButton ? '' : nameButton }}</span></button>
+                <button v-if="disabled || disabledButton" disabled class="order__form--button disabled"><span
+                        class="bx bx-loader loading"></span></button>
+                <button v-else @click="submitForm" class="order__form--button">{{ nameButton
+                }}</button>
             </div>
             <div v-if="modal.loading" class="admin_modal__loading">
                 <span class='bx bx-loader-alt loading'></span>
@@ -38,7 +38,7 @@ export default {
     methods: {
         ...mapMutations(["setModal"]),
         closeModal: function () {
-            this.setModal({ ...this.modal, data: null, loading: true });
+            this.setModal({ ...this.modal, data: null, loading: true, info: null });
             if (this.reset) {
                 this.reset();
             }

@@ -16,7 +16,7 @@ const Admin_Router = [
     { path: '/admin/specicallists', component: SpecicalList, name: 'specicallists', role: 0 },
     { path: '/admin/blogs', component: Blog, name: 'blogs', role: 'all' },
     { path: '/admin/timebooks', component: TimeBook, name: 'timebooks', role: 0 },
-    { path: '/admin/booklists', component: BookList, name: 'booklists', role: 'all' },
+    { path: '/admin/booklists', component: BookList, name: 'booklists', role: 1 },
     { path: '/admin/chats', component: Chat, name: 'chats', role: 1 },
 ]
 export default (Admin_Router)

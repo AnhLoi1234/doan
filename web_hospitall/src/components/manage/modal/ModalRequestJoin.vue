@@ -16,8 +16,8 @@
                 Bất kì yêu cầu tư vấn phải có sự cho phép của bạn mới có thể trò chuyện với bạn.
             </p>
             <ul class='flex-1 text-sm pl-10 pr-5'>
-                <li>Từ chối</li>
-                <li @click="handle" :class="loading ? 'bx bx-loader loading' : ''">
+                <li @click="handleDeny">Từ chối</li>
+                <li @click="accept" :class="loading ? 'bx bx-loader loading' : ''">
                     {{ loading ? '' : 'Chấp nhận' }}
                 </li>
             </ul>
@@ -30,7 +30,7 @@ import { mapState } from 'vuex';
 import Request from '../../../Request';
 
 export default {
-    props: ['handleAccept', 'data'],
+    props: ['handleAccept', 'data', 'handleDeny'],
     data() {
         return {
             loading: false
@@ -40,7 +40,7 @@ export default {
         ...mapState(['admin'])
     },
     methods: {
-        handle: async function () {
+        accept: async function () {
             try {
                 this.loading = true;
                 const result = await Request.Post('/groupChats', {

@@ -1,7 +1,7 @@
 <template>
-    <ModalAdmin :onSubmit="onSubmit" :title="'Bác sĩ'" :disabled="edit !== 3"
+    <ModalAdmin :onSubmit="onSubmit" :title="'Bác sĩ'" :disabled="edit !== 3 && admin?.role != 0"
         :nameButton="`${id ? 'Sửa' : 'Thêm'} bác sĩ`">
-        <div class="specicallist flex-space-between">
+        <div v-if="admin?.role != 0" class="specicallist flex-space-between">
             <label v-if="edit !== 1" class="left-0" @click="writeDescription(edit - 1)" for="">
                 Trở về
             </label>
@@ -26,17 +26,42 @@
                 </div>
             </div>
             <div class="flex">
-                <div class="w-50">
-                    <InputComponent placeholder="Nhập vị trí" type="text" icon="bx bx-leaf"
-                        :errorMessage="position.error ? 'Vị trí không được trống' : ''" :onChange="onChange"
-                        name="position" :value="position.value">
-                    </InputComponent>
+                <div class="w-50" style="display: flex;align-items: center;transform: translateY(-0.3rem);">
+                    <div class="select_admin">
+                        <select @change="onChange($event)" name="position" v-model="position.value">
+                            <option value="Tiến sĩ, Bác sĩ">
+                                Tiến sĩ, Bác sĩ
+                            </option>
+                            <option value="Thạc sĩ, Bác sĩ">
+                                Thạc sĩ, Bác sĩ
+                            </option>
+                            <option value="Giáo sư, Bác sĩ">
+                                Giáo sư, Bác sĩ
+                            </option>
+                            <option value="Tiến sĩ, Thạc sĩ, Bác sĩ">
+                                Tiến sĩ, Thạc , Bác sĩ
+                            </option>
+                            <option value="P. Tiến sĩ, Thạc sĩ, Bác sĩ">
+                                P. Tiến sĩ, Thạc sĩ, Bác sĩ
+                            </option>
+                            <option value="Giáo sư, Bác sĩ">
+                                Giáo sư, Tiến sĩ ,Bác sĩ
+                            </option>
+                        </select>
+                        <span class="bx bx-chevron-down"></span>
+                    </div>
+
                 </div>
-                <div class="w-50">
-                    <InputComponent placeholder="Nhập địa chỉ" type="text" icon="bx bx-location-plus"
-                        :errorMessage="address.error ? 'Địa chỉ không được trống' : ''" :onChange="onChange"
-                        name="address" :value="address.value">
-                    </InputComponent>
+                <div class="w-50" style="display: flex;align-items: center;transform: translateY(-0.3rem);">
+                    <div class="select_admin">
+                        <select @change="onChange($event)" name="address" v-model="address.value">
+                            <option v-for="item in addresses" :key="item.id" :value="item._name">
+                                {{ item._name }}
+                            </option>
+                        </select>
+                        <span class="bx bx-chevron-down"></span>
+                    </div>
+
                 </div>
             </div>
             <div class="flex">
@@ -74,10 +99,10 @@
                 </label>
             </div>
         </div>
-        <div v-if="edit === 2">
+        <div v-if="edit === 2 && admin?.role == 1">
             <VueEditor v-model="description.value" />
         </div>
-        <div v-if="edit === 3">
+        <div v-if="edit === 3 && admin?.role == 1">
             <ItemTimeDoctor :id="id" :setCurrent="setCurrent" :currentData="current" />
         </div>
     </ModalAdmin>
@@ -137,7 +162,7 @@ export default {
                 error: ''
             },
             description: {
-                value: '',
+                value: 'Chưa có mô tả',
                 error: ''
             },
             listTime: [],
@@ -147,7 +172,8 @@ export default {
             },
             data: null,
             current: [],
-            backupCurrent: []
+            backupCurrent: [],
+            addresses: []
         }
     },
     methods: {
@@ -248,7 +274,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['modal'])
+        ...mapState(['modal', 'admin'])
     },
     mounted() {
         (async () => {
@@ -273,6 +299,8 @@ export default {
                 result = await Request.Get(`/timedoctors/${this.id}`);
                 this.current = result.data.data;
                 this.backupCurrent = (result.data.data);
+                result = await Request.Get('/provinces');
+                this.addresses = result.data.data;
                 return true;
             } catch (error) {
                 alert(error);

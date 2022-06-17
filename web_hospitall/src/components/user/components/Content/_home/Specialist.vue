@@ -4,9 +4,11 @@
             Chuyên khoa phổ biến
         </h2>
         <div class="item__post__ row">
-            <div class="item__post">
+            <span @click="handleClick(true)" class="bx bx-chevron-left button-slider left"></span>
+            <div class="item__post" :style="{ transition: '0.3s', transform: `translateX(-${index * 25}%)` }">
                 <ItemSpecialList v-for="item in list" :item="item" :key="item.id"></ItemSpecialList>
             </div>
+            <span @click="handleClick()" class="bx bx-chevron-right button-slider right"></span>
         </div>
     </div>
 </template>
@@ -18,6 +20,17 @@ export default {
     data() {
         return {
             list: [],
+            index: 0
+        }
+    },
+    methods: {
+        handleClick: function (isLeft) {
+            if (isLeft) {
+                this.index = this.index - 1 < 0 ? this.list.length - 4 : this.index - 1
+            }
+            else {
+                this.index = this.index + 1 > this.list.length - 4 ? 0 : this.index + 1
+            }
         }
     },
     mounted() {

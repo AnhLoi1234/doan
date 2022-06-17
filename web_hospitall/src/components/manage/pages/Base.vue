@@ -9,6 +9,13 @@
                         <br />
                         <div v-if="this.$route.name !== 'manage' && this.$route.name !== 'chats'"
                             class="admin_value__top">
+                            <div v-if="optional" class="flex">
+                                <span v-for="item in optional" :key="item.id" @click="handleOptional(item)"
+                                    class="status" :class="optionalActive.id === item.id ? 'active' : ''"
+                                    :style="{ background: item.color }">
+                                    {{ item.name }}
+                                </span>
+                            </div>
                             <ul>
                                 <li v-if="this.$route.name !== 'booklists' && this.$route.name !== 'users'"
                                     @click="openModal()" class="orange">Thêm
@@ -26,7 +33,8 @@
             </div>
         </div>
     </div>
-    <ModalRequestJoin v-if="modalShow" :handleAccept="handleAccept" :data="data"></ModalRequestJoin>
+    <ModalRequestJoin v-if="modalShow" :handleAccept="handleAccept" :handleDeny="handleDeny" :data="data">
+    </ModalRequestJoin>
 </template>
 
 <script>
@@ -37,8 +45,10 @@ import { mapState, mapMutations } from 'vuex';
 import { ref, provide } from "vue";
 import ModalRequestJoin from "../modal/ModalRequestJoin.vue";
 import Admin_Router from "../../../Router/Router_admin";
+import { v4 } from 'uuid';
+
 export default {
-    props: ['onInput'],
+    props: ['onInput', 'optional', 'handleOptional', 'optionalActive'],
     components: { Header, Menu, ModalRequestJoin },
     setup() {
         let state = ref(true)
@@ -49,14 +59,15 @@ export default {
         return {
             loading: true,
             modalShow: false,
-            data: null
+            data: null,
+            v4: v4
         }
     },
     computed: {
         ...mapState(['admin', 'modal', 'socket']),
     },
     methods: {
-        ...mapMutations(['setadmin', 'setModal']),
+        ...mapMutations(['setadmin', 'setModal', 'setKeyChat']),
         openModal: function () {
             this.setModal({ ...this.modal, data: true })
         },
@@ -84,8 +95,14 @@ export default {
             }
         },
         handleAccept: function (data) {
-            this.socket.emit('acceptJoin', { ... this.data, groupChat: data });
+            this.setKeyChat(this.v4())
+            this.socket.emit('acceptJoin', { ... this.data, typeAccess: 2, groupChat: data });
             this.$router.push({ name: 'chats' });
+            this.modalShow = false;
+        },
+        handleDeny: function () {
+            this.setKeyChat(this.v4())
+            this.socket.emit('acceptJoin', { ... this.data, typeAccess: 3 });
             this.modalShow = false;
         }
     },
@@ -95,7 +112,12 @@ export default {
                 this.modalShow = true;
                 this.data = data;
             })
-        }
+            setInterval(async () => {
+                await Request.Put('/update-online', {
+                    id: this.admin?.id
+                });
+            }, 30000);
+        },
     },
     mounted() {
         this.CheckAuth();

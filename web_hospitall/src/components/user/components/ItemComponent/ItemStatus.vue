@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-    props: ['statusMain', 'isAdmin'],
+    props: ['statusMain', 'isAdmin', 'handleStatus'],
     data() {
         return {
             status: {

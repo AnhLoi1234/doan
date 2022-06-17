@@ -12,7 +12,7 @@
                 <br />
                 <hr />
                 <br />
-                <div v-html="blog.content"></div>
+                <div v-html="blog.content" class="content__blog"></div>
             </div>
             <div>
                 <ItemBlogDetail v-for="item in list" :key="item.id" :item="item" />
@@ -23,12 +23,10 @@
             <p class="reply__title">
                 Bình luận ({{ comments.length }})
             </p>
-            <div class="form-comment">
-                <InputComponent icon="bx bx-user" placeholder="Nhập họ tên" @change="onChangeInput" name="fullname"
-                    :errorMessage="fullname.error ? 'Họ tên không được trống' : ''">
-                </InputComponent>
+            <div v-if="user" class="form-comment">
                 <div class="order__form--textarea">
-                    <textarea placeholder="Nội dung" name="content" @input="onChangeInput"></textarea>
+                    <textarea placeholder="Nội dung" name="content" @input="onChangeInput"
+                        v-model="content.value"></textarea>
                     <span class="bx bxs-plus-circle"></span>
                 </div>
                 <p class="color-red" :class="content.error ? 'active' : 'hidden'">Nội dung không được trống</p>
@@ -58,11 +56,10 @@
 import Request from '../../Request';
 import ItemBlogDetail from './components/ItemComponent/ItemBlogDetail.vue';
 import ItemReplyBlog from './components/ItemComponent/ItemReplyBlog.vue';
-import InputComponent from '../manage/InputComponent.vue';
 import { mapState } from 'vuex';
 
 export default {
-    components: { ItemBlogDetail, ItemReplyBlog, InputComponent },
+    components: { ItemBlogDetail, ItemReplyBlog },
     data() {
         return {
             blog: null,
@@ -74,10 +71,10 @@ export default {
                 value: '',
                 error: false
             },
-            fullname: {
-                value: '',
-                error: false
-            },
+            // fullname: {
+            //     value: '',
+            //     error: false
+            // },
         }
     },
     computed: {
@@ -90,16 +87,16 @@ export default {
         },
         onSubmit: async function () {
             this.loadingButton = true;
-            this.fullname.error = this.fullname.value.length === 0;
             this.content.error = this.content.value.length === 0;
-            if (!this.fullname.error && !this.content.error) {
+            if (!this.content.error) {
                 const result = await Request.Post('/commentBlogs', {
-                    fullname: this.fullname.value,
+                    fullname: this.user?.fullname,
                     content: this.content.value,
                     iduser: this.user?.id,
                     idblog: this.blog?.id
                 });
                 this.comments = [...this.comments, result.data.data];
+                this.content.value = '';
             }
             this.loadingButton = false;
         },

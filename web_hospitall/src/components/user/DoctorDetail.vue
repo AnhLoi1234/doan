@@ -48,7 +48,7 @@
                         </ul>
                     </div>
                 </div>
-                <button v-if="book" @click="orderNow()" class="button-order">
+                <button v-if="book.time" @click="orderNow()" class="button-order">
                     ĐẶT LỊCH NGAY
                 </button>
                 <button v-else class="button-order disabled" disabled>
@@ -130,9 +130,8 @@ export default {
                 this.loading = true;
                 let result = await Request.Get(`/doctors/${this.$route.params.id}`);
                 this.setBook({
+                    ...this.book,
                     doctor: result.data.data,
-                    time: null,
-                    date: null
                 });
                 result = await Request.Get("/timebooks");
                 this.times = result.data.data;
@@ -156,3 +155,9 @@ export default {
     components: { ItemCalendar, ItemReplyBookList }
 }
 </script>
+<style>
+.disabled {
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+</style>

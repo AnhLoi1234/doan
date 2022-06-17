@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\M_time_doctor;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\C_Admin;
 use Illuminate\Support\Facades\DB;
 
 class C_time_doctor extends Controller
@@ -16,8 +17,8 @@ class C_time_doctor extends Controller
 
     public function getTimeDoctorByIdDoctor(Request $request)
     {
-        $result = DB::select("SELECT * FROM `m_time_doctors` WHERE m_time_doctors.day >= DAY(NOW()) AND m_time_doctors.month >= 
-        MONTH(NOW()) AND m_time_doctors.year >= YEAR(NOW()) AND m_time_doctors.idadmin = ? ", [$request->id]);
+        $cAdmin = new C_Admin;
+        $result = DB::select($cAdmin->stringQueryTimeDoctor . " AND m_time_doctors.idadmin = ? ", [$request->id]);
         return response()->json(['data' => $result]);
     }
 

@@ -16,5 +16,8 @@ export default {
     },
     setModalUser(state, data) {
         state.modalUser = data;
+    },
+    setKeyChat(state, data) {
+        state.keyChat = data;
     }
 }

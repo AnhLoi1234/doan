@@ -10,6 +10,14 @@
   user-select: none;
 }
 
+*:focus,
+button:focus,
+input:focus,
+select:focus {
+  outline: none;
+}
+
+
 html {
   font-size: 62.5%;
 }
@@ -731,6 +739,10 @@ select {
   margin-bottom: 2rem;
 }
 
+.item__guide--item>div:nth-child(2) {
+  flex: 1;
+}
+
 @media all and (min-width: 768px) {
   .item__guide--item {
     width: 50%;
@@ -1139,6 +1151,7 @@ select {
 
 .order__item--left--content {
   padding-left: 2rem;
+  flex: 1;
 }
 
 .order__item--left--content h3 {
@@ -1783,7 +1796,7 @@ select {
 
 .admin__content {
   flex: 1;
-  height: 100%;
+  overflow: auto;
   background-color: var(--color-thin);
 }
 

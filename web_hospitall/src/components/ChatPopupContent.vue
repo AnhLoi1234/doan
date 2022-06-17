@@ -1,10 +1,11 @@
 <template>
-    <div class="chat__right--content--content">
+    <div class="chat__right--content--content" ref="containerMessage">
         <div v-if="messages?.length">
             <div v-for="message in messages" :key="message.id">
                 <div v-if="message.is_user == id" class="message__item flex-start">
                     <div class="message__item--image">
-                        <img src="https://berrydashboard.io/static/media/user-round.13b5a31b.svg" alt="">
+                        <img :src="urlImage + (message.is_user == id ? 'user-vector.jpeg' : 'doctor-vector.webp')"
+                            alt="">
                         <span></span>
                     </div>
                     <div class="message__item--content">
@@ -41,6 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 import moment from 'moment';
+import { URL_IMAGE } from '../Config';
 
 moment.locale("VI");
 
@@ -50,7 +52,8 @@ export default {
         return {
             loading: false,
             content: '',
-            moment: moment
+            moment: moment,
+            urlImage: URL_IMAGE
         }
     },
     computed: {
@@ -91,17 +94,27 @@ export default {
     },
     watch: {
         groupChat: function () {
-            console.log(this.id);
-
             this.socketOn();
         },
         _id: function () {
-            console.log(this.id);
             this.socketOn();
+        },
+        messages: {
+            handler() {
+                if (this.$refs.containerMessage) {
+                    console.log(this.$refs.containerMessage.scrollHeight);
+                    this.$refs.containerMessage.scrollTop = this.$refs.containerMessage.scrollHeight;
+                }
+            },
+            immediate: true
         }
     },
     mounted() {
         this.socketOn();
+        if (this.$refs.containerMessage) {
+            console.log(this.$refs.containerMessage.scrollHeight);
+            this.$refs.containerMessage.scrollTop = this.$refs.containerMessage.scrollHeight;
+        }
     }
 }
 </script>

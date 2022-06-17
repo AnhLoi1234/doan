@@ -57,7 +57,7 @@ export default {
         ChatPopupContent
     },
     computed: {
-        ...mapState(['admin', 'socket'])
+        ...mapState(['admin', 'socket', 'keyChat'])
     },
     methods: {
         handleItemChat: function (groupChat, index) {
@@ -92,7 +92,7 @@ export default {
             id: null,
             groupChats: [],
             groupChat: { id: null },
-            urlImage: URL_IMAGE + "avatar-default.jpeg",
+            urlImage: URL_IMAGE + 'user-vector.jpeg',
             messages: [],
             loadingMessage: false,
             moment: moment
@@ -102,6 +102,15 @@ export default {
         admin: async function (newData) {
             try {
                 const result = await Request.Get(`/groupChats/${newData?.id}`);
+                this.groupChats = result.data.data;
+                this.loading = false;
+            } catch (error) {
+                alert(error);
+            }
+        },
+        keyChat: async function () {
+            try {
+                const result = await Request.Get(`/groupChats/${this.admin?.id}`);
                 this.groupChats = result.data.data;
                 this.loading = false;
             } catch (error) {

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Redis;
 
 class C_Admin extends Controller
 {
+    public $stringQueryTimeDoctor = "SELECT * FROM `m_time_doctors` WHERE (m_time_doctors.day >= DAY(NOW()) AND m_time_doctors.month >=  MONTH(NOW()) AND m_time_doctors.year >= YEAR(NOW())) OR (m_time_doctors.day >= 1 AND m_time_doctors.month >=  (MONTH(NOW()) + 1) AND m_time_doctors.year >= YEAR(NOW())) ";
+
     public function register(Rq_resgister $request)
     {
         $admin = new M_Admin;
@@ -60,8 +62,7 @@ class C_Admin extends Controller
         $utils = new Utils;
         foreach ($result as $key => $value) {
             $books = DB::select("SELECT * FROM m_book_lists WHERE iddoctor = $value->idadmin AND datebook = CURDATE() AND dayofweek = " . ($utils->getWeekdayMain()));
-            $dates = DB::select("SELECT * FROM `m_time_doctors` WHERE m_time_doctors.day >= DAY(NOW()) AND m_time_doctors.month >= 
-            MONTH(NOW()) AND m_time_doctors.year >= YEAR(NOW()) AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
+            $dates = DB::select($this->stringQueryTimeDoctor ." AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
             array_push($arrObj, ['info' => $value, 'books' => $books, 'dates' => $dates]);
         }
         return response()->json(['data' => $arrObj]);
@@ -75,8 +76,7 @@ class C_Admin extends Controller
         $utils = new Utils;
         foreach ($result as $key => $value) {
             $books = DB::select("SELECT * FROM m_book_lists WHERE iddoctor = $value->idadmin AND datebook = CURDATE() AND dayofweek = " . ($utils->getWeekdayMain()));
-            $dates = DB::select("SELECT * FROM `m_time_doctors` WHERE m_time_doctors.day >= DAY(NOW()) AND m_time_doctors.month >= 
-            MONTH(NOW()) AND m_time_doctors.year >= YEAR(NOW()) AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
+            $dates = DB::select($this->stringQueryTimeDoctor . " AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
             array_push($arrObj, ['info' => $value, 'books' => $books, 'dates' => $dates]);
         }
         return response()->json(['data' => $arrObj]);
@@ -123,8 +123,7 @@ class C_Admin extends Controller
         $utils = new Utils;
         foreach ($result as $key => $value) {
             $books = DB::select("SELECT * FROM m_book_lists WHERE iddoctor = $value->idadmin AND datebook = CURDATE() AND dayofweek = " . ($utils->getWeekdayMain()));
-            $dates = DB::select("SELECT * FROM `m_time_doctors` WHERE m_time_doctors.day >= DAY(NOW()) AND m_time_doctors.month >= 
-            MONTH(NOW()) AND m_time_doctors.year >= YEAR(NOW()) AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
+            $dates = DB::select($this->stringQueryTimeDoctor . " AND m_time_doctors.idadmin = ? ", [$value->idadmin]);
             array_push($arrObj, ['info' => $value, 'books' => $books, 'dates' => $dates]);
         }
         return response()->json(['data' => sizeof($arrObj) === 0 ? null : $arrObj[0]]);
@@ -185,8 +184,16 @@ class C_Admin extends Controller
     {
         $result = DB::select("SELECT * , m__admins.id as 'idadmin'  FROM m__admins LEFT JOIN m_info_admins ON m__admins.id = 
         m_info_admins.idadmin INNER JOIN m_specical_lists ON  m_info_admins.idspecicallist = m_specical_lists.id 
-        WHERE m__admins.role != 0");
+        WHERE m__admins.role != 0 AND m_info_admins.is_online >= NOW() - interval 10 second");
         $number = mt_rand(0, sizeof($result));
         return response()->json(['data' => sizeof($result) === 0 ? null : $result[$number - 1 < 0 ? 0 : $number - 1]]);
+    }
+
+    public function updateOnline(Request $request)
+    {
+        DB::update(
+            "UPDATE m_info_admins SET is_online = NOW() WHERE m_info_admins.idadmin = ? ",
+            [$request->id]
+        );
     }
 }

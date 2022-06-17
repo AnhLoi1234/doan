@@ -660,6 +660,19 @@ input::-webkit-inner-spin-button {
   padding: 0.4rem 0.8rem;
 }
 
+.status {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 100rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.status.active {
+  border: 0.2rem solid royalblue;
+  border-radius: 0 !important;
+}
+
 .red {
   color: #fff;
   font-size: 1.2rem;
@@ -798,10 +811,86 @@ input::-webkit-inner-spin-button {
   opacity: 0.6;
   text-align: center;
 }
-.message__item--content{
+
+.message__item--content {
   font-size: 1.3rem;
   max-width: 80%;
 }
-.chat__right--content--content{
+
+.chat__right--content--content {
   overflow-y: auto;
+}
+
+.content__blog {
+  margin: 0 auto;
+  text-align: left;
+  font-weight: 400;
+  line-height: 2.4rem;
+  letter-spacing: -0.01em;
+}
+
+.content__blog h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1rem 0rem;
+}
+
+.content__blog img {
+  width: auto;
+  margin: 1.4rem auto;
+}
+
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dashboard__content table tr {
+  font-size: 1.5rem;
+}
+
+.item__post__.row {
+  position: relative;
+}
+
+.button-slider {
+  position: absolute;
+  top: 50%;
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+  border-radius: 100rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  justify-content: center;
+  font-size: 3.2rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transform: translateY(-50%);
+}
+
+.button-slider.left {
+  left: 0;
+}
+
+.button-slider.right {
+  right: 0;
 }

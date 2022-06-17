@@ -16,7 +16,6 @@
                     <div>
                         <p class="item__guide--item--text col-8">
                             {{ item.title }} <br />
-
                         </p>
                         <!-- <p> {{ item.created_at }}</p> -->
                     </div>

@@ -48,6 +48,39 @@ export default {
                 })
                 dayofweek = (dayofweek === 6 ? 0 : dayofweek + 1);
                 day++;
+                let too = false;
+                if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12) {
+                    if (day > 31) {
+                        too = true;
+                    }
+                }
+                if (month === 4 || month === 6 || month === 9 || month === 11) {
+                    if (day > 30) {
+                        too = true;
+                    }
+                }
+                if (month === 2) {
+                    if (year % 4 === 0) {
+                        if (day > 29) {
+                            too = true;
+                        }
+                    }
+                    else {
+                        if (day > 28) {
+                            too = true;
+                        }
+                    }
+                }
+                if (too) {
+                    day = 1;
+                    if (month === 12) {
+                        month = 1;
+                        year++;
+                    }
+                    else {
+                        month++;
+                    }
+                }
             }
             this.list = listData;
         })();

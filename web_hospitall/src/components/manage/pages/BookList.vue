@@ -1,8 +1,17 @@
 <template>
-    <Base :onInput="onInput">
+    <Base :onInput="onInput" :optional="[
+        { id: 'all', name: 'Tất cả', color: 'black', value: null },
+        { id: 1, name: 'Đã huỷ', color: 'gray', value: -1 },
+        { id: 2, name: 'Chưa duyệt', color: 'red', value: 0 },
+        { id: 3, name: 'Đã duyệt', color: 'green', value: 1 },
+        { id: 4, name: 'Đã khám', color: 'var(--color-bold)', value: 2 },
+        { id: 5, name: 'Đã phản hồi', color: 'orange', value: 3 },
+    ]" :handleOptional="(item) => { this.optionalActive = item }" :optionalActive="optionalActive">
     <Table :hideCrud="true" :title="'Danh sách lịch đặt khám'" :heading="['Tên khách hàng', 'Số điện thoại', 'Email', 'Tên bác sĩ', 'Giờ khám',
     'Ngày khám', 'Thời gian đặt', 'Tình trạng', 'Sửa']" :list="list" :loading="loading">
-        <tr v-for="(item, index) in list" :key="item.id">
+        <tr v-for="(item, index) in (
+            optionalActive.id === 'all' ? list : list.filter(dt => dt.status_book_list == optionalActive.value)
+        )" :key="item.id">
             <td>{{ index + 1 }}</td>
             <td>
                 {{ item.fullname_main }}
@@ -56,18 +65,20 @@ export default {
         ModalOptionData
     },
     computed: {
-        ...mapState(['modal'])
+        ...mapState(['modal', 'admin'])
     },
     methods: {
         ...mapMutations(['setModal']),
         onInput: function (event) {
+            this.value = event.target.value;
             this.loading = true;
             this.counter += 1;
             clearTimeout(this.timeOut);
             this.timeOut = setTimeout(async () => {
                 try {
                     const result = await Request.Post(`/booklist-search`, {
-                        value: event.target.value
+                        value: event.target.value,
+                        status: this.optionalActive.value
                     });
                     this.list = result.data.data;
                     this.loading = false;
@@ -88,34 +99,53 @@ export default {
             if (index !== -1) {
                 let clone = [...this.list];
                 clone[index] = item;
-                console.log(clone[index].status_book_list);
                 this.list = clone;
             }
             else {
                 this.list = [...this.list, item];
             }
-        }
-    },
-    data() {
-        return {
-            id: null,
-            status: -2,
-            list: [],
-            loading: true,
-            counter: 0,
-            timeOut: null
-        }
-    },
-    mounted() {
-        (async () => {
+        },
+        fetchData: async function () {
             try {
-                const result = await Request.Get("/booklists");
+                const result = await Request.Get(`/booklist-doctor/${this.admin?.id}`);
                 this.list = result.data.data;
                 this.loading = false;
             } catch (error) {
                 alert(error);
             }
-        })();
+        }
+    },
+    data() {
+        return {
+            value: '',
+            id: null,
+            status: -2,
+            list: [],
+            loading: true,
+            counter: 0,
+            timeOut: null,
+            optionalActive: { id: 'all', value: null }
+        }
+    },
+    watch: {
+        admin: function (newData) {
+            if (newData) {
+                this.fetchData();
+            }
+        },
+        optionalActive: async function () {
+            try {
+                this.loading = true;
+                const result = await Request.Post(`/booklist-search`, {
+                    value: this.value,
+                    status: this.optionalActive.value
+                });
+                this.list = result.data.data;
+                this.loading = false;
+            } catch (error) {
+                alert(error);
+            }
+        }
     }
 }
 </script>

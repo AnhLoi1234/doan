@@ -18,7 +18,7 @@ export default {
         doctor: function (newData) {
             this.socket.on(`_acceptJoin.${newData?.idadmin}`, (data) => {
                 this.setData(data);
-                this.setIsLogin(2);
+                this.setIsLogin(data.typeAccess);
             });
         }
     }

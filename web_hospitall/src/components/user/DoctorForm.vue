@@ -65,13 +65,10 @@
                 {{ 'Phường/Xã không được để trống' }}</p>
 
             <div class="order__form--textarea">
-                <textarea placeholder="Lý do khám"></textarea>
+                <textarea v-model="description.value" @change="onChangeInput($event)" name="description"
+                    placeholder="Lý do khám"></textarea>
                 <span class="bx bxs-plus-circle"></span>
             </div>
-            <!-- <div class="order__form--for">
-                <input type="radio" name="" id="">
-                <label for="">Thanh toán sau tại cơ sở y tế</label>
-            </div> -->
             <p class="order__form--desc">Quý khách vui lòng điền đầy đủ thông tin để tiết kiệm thời gian làm thủ tục
                 khám</p>
             <div class="order__form--warning">
@@ -117,6 +114,10 @@ export default {
             provinces: [],
             districts: [],
             wards: [],
+            description: {
+                value: '',
+                error: false
+            },
             province: {
                 value: '',
                 error: false
@@ -163,11 +164,11 @@ export default {
 
                     await Request.Post('/booklists', {
                         iddoctor: this.book.doctor.info.idadmin,
-                        description: 'done',
                         idtimebook: this.book.time.id,
                         idtimedoctor: this.book.date.id,
                         iduser: this.user.id,
                         fullname: this.fullname.value,
+                        description: this.description.value,
                         gender: this.gender,
                         phone: this.phone.value,
                         email: this.email.value,
@@ -192,6 +193,8 @@ export default {
                 case 'email':
                     this[event.target.name].error = event.target.value.length === 0 ? 1 :
                         !event.target.value.match(REGEX_EMAIL) ? 2 : false
+                    break;
+                case 'description':
                     break;
                 default:
                     this[event.target.name].error = event.target.value.length === 0
@@ -261,7 +264,7 @@ export default {
             });
         }
         else {
-            (async () => {
+            this.user ? (async () => {
                 try {
                     if (this.user) {
                         this.fullname.value = this.user.fullname;
@@ -274,6 +277,10 @@ export default {
                 } catch (error) {
                     alert(error);
                 }
+            })() : (() => {
+                this.$router.push({
+                    name: "Login"
+                });
             })();
         }
     },

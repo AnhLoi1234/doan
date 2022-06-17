@@ -4,10 +4,12 @@
             {{ isLogin === 1 ? 'Hổ trợ trực tuyến' : isLogin === 2 ? doctor?.name : 'Nhập thông tin' }}
         </p>
         <div @click="handleClose" class="chat-popup__form--close bx bx-x"></div>
-        <ChatPopupForm v-if="isLogin === 0" :setIsLogin="setIsLogin" :setDoctor="setDoctor" :id="id" />
+        <ChatPopupForm v-if="isLogin === 0" :isLogin="isLogin" :setIsLogin="setIsLogin" :setDoctor="setDoctor"
+            :id="id" />
         <ChatPopupWating v-if="isLogin === 1" :setIsLogin="setIsLogin" :doctor="doctor" :id="id" :setData="setData" />
         <ChatPopupContent v-if="isLogin === 2" :setIsLogin="setIsLogin" :messages="messages" :sendMessage="sendMessage"
             :id="doctor?.idadmin" :doctor="doctor" :groupChat="data.groupChat" :_id="id" :setMessage="setMessage" />
+        <ChatPopupDeny v-if="isLogin === 3" :setIsLogin="setIsLogin" />
     </div>
 </template>
 <script>
@@ -17,6 +19,7 @@ import ChatPopupWating from './ChatPopupWating.vue';
 import { v4 } from 'uuid';
 import Request from '../../../../Request';
 import { mapState } from 'vuex';
+import ChatPopupDeny from './ChatPopupDeny.vue';
 export default {
     props: ["isShow", "setIsShow"],
     data() {
@@ -65,6 +68,6 @@ export default {
             }
         }
     },
-    components: { ChatPopupForm, ChatPopupContent, ChatPopupWating }
+    components: { ChatPopupForm, ChatPopupContent, ChatPopupWating, ChatPopupDeny }
 }
 </script>

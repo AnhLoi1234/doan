@@ -1,8 +1,14 @@
 <template>
-    <Base :onInput="onInput">
+    <Base :onInput="onInput" :optional="[
+        { id: 'all', name: 'Tất cả', color: 'black', value: null },
+        { id: 1, name: 'Bình thường', color: 'green', value: 1 },
+        { id: 2, name: 'Khoá', color: 'red', value: 0 }
+    ]" :handleOptional="(item) => { this.optionalActive = item }" :optionalActive="optionalActive">
     <Table :heading="['Ảnh đại diện', 'Họ tên', 'Số điện thoại', 'Email', 'Tình trạng', 'Sửa']" :hideCrud="true"
         :title="'Danh sách người dùng'" :loading="loading" :list="list">
-        <tr v-for="(item, index) in list" :key="item.id">
+        <tr v-for="(item, index) in (
+            optionalActive.id === 'all' ? list : list.filter(dt => dt.status === optionalActive.value)
+        )" :key="item.id">
             <td>{{ index + 1 }}</td>
             <td>
                 <img :src="`${urlImage + item.avatar}`"
@@ -51,12 +57,14 @@ export default {
         ...mapMutations(['setModal']),
         onInput: function (event) {
             this.loading = true;
+            this.value = event.target.value;
             this.counter += 1;
             clearTimeout(this.timeOut);
             this.timeOut = setTimeout(async () => {
                 try {
                     const result = await Request.Post(`/user-search`, {
-                        value: event.target.value
+                        value: event.target.value,
+                        status: this.optionalActive.value
                     });
                     this.list = result.data.data;
                     this.loading = false;
@@ -84,6 +92,8 @@ export default {
     },
     data() {
         return {
+            value: 0,
+            optionalActive: { id: 'all', value: null },
             status: -1,
             id: null,
             list: [],
@@ -91,6 +101,21 @@ export default {
             urlImage: URL_IMAGE,
             timeOut: null,
             counter: 0
+        }
+    },
+    watch: {
+        optionalActive: async function () {
+            try {
+                this.loading = true;
+                const result = await Request.Post(`/user-search`, {
+                    value: this.value,
+                    status: this.optionalActive.value
+                });
+                this.list = result.data.data;
+                this.loading = false;
+            } catch (error) {
+                alert(error);
+            }
         }
     },
     mounted() {

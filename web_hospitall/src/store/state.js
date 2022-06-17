@@ -20,5 +20,6 @@ export default {
         data: null,
         loading: false
     },
-    socket: socketIOClient.connect('http://192.168.0.118:4444/')
+    keyChat: null,
+    socket: socketIOClient.connect('http://localhost:4444/')
 }

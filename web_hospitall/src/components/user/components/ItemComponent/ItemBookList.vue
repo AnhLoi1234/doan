@@ -12,7 +12,7 @@
             <p><span>Giới tính </span> : {{ item.gender_main }}</p>
             <p><span>Địa chỉ </span> : {{ item.address_main }}</p>
             <p><span>Số điện thoại </span> : {{ item.phone_main }} </p>
-            <p><span>Lý do </span> : </p>
+            <p><span>Lý do </span> : {{ item.description }}</p>
         </div>
         <div class="item-booklist__status cancel">
             <div v-if="item.status_book_list != 2">
@@ -85,13 +85,15 @@ export default {
         },
         handleStatus: async function () {
             try {
-                if (this.item.status_book_list === 0) {
+                if (this.item.status_book_list == 0) {
                     this.loading = true;
-                    await Request.Post('/booklist-status', {
-                        id: this.item.idbooklist_main,
-                        status: -1
-                    })
-                    this.statusItem(-1);
+                    if (confirm('Bạn có chắc chắc muốn huỷ lịch khám này ??')) {
+                        await Request.Post('/booklist-status', {
+                            id: this.item.idbooklist_main,
+                            status: -1
+                        })
+                        this.statusItem(-1);
+                    }
                     this.loading = false;
                 }
             } catch (error) {

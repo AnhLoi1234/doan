@@ -31,7 +31,7 @@ export default {
             { id: 2, name: 'Chuyên khoa', route: 'specicallists', icon: 'spreadsheet', role: 0 },
             { id: 3, name: 'Thời gian đặt', route: 'timebooks', icon: 'time', role: 0 },
             { id: 4, name: 'Bài viết', route: 'blogs', icon: 'pencil', role: 'all' },
-            { id: 5, name: 'Lịch đặt khám', route: 'booklists', icon: 'calendar', role: 'all' },
+            { id: 5, name: 'Lịch đặt khám', route: 'booklists', icon: 'calendar', role: 1 },
             { id: 6, name: 'Hỗ trợ', route: 'chats', icon: 'chat', role: 1 }]
         }
     },

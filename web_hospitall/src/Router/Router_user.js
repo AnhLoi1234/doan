@@ -5,6 +5,7 @@ import Register from '../components/user/Register'
 import Doctors from '../components/user/Doctors';
 import DoctorDetail from '../components/user/DoctorDetail';
 import DoctorForm from '../components/user/DoctorForm';
+import DoctorList from '../components/user/DoctorList';
 import NotFound from '../components/NotFound';
 import Blog from '../components/user/Blog';
 import BlogDetail from '../components/user/BlogDetail';
@@ -18,7 +19,7 @@ const User_Router = [
             { path: '/register', component: Register, name: 'Register' },
             { path: '/doctors/:slug?', component: Doctors, name: 'Doctors' },
             { path: '/blogs', component: Doctors, name: 'Blogs' },
-            { path: '/doctor-list/:slug?', component: DoctorDetail, name: 'DoctorList' },
+            { path: '/doctor-list/:slug?', component: DoctorList, name: 'DoctorList' },
             { path: '/doctor-detail/:slug?/:id?', component: DoctorDetail, name: 'DoctorDetail' },
             { path: '/doctor-form/:slug?', component: DoctorForm, name: 'DoctorForm' },
             { path: '/blogs/', component: Blog, name: 'Blogs' },

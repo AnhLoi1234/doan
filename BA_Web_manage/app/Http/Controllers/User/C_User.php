@@ -18,7 +18,7 @@ class C_User extends Controller
 {
     public function confirmEmail(Rq_resgister $request)
     {
-        $Check = rand(1, 999999);
+        $Check = rand(100000, 999999);
         $data = [
             'number' => $Check
         ];
@@ -71,14 +71,21 @@ class C_User extends Controller
 
     public function getAllUser()
     {
-        $result = DB::select("SELECT * FROM m_users");
+        $result = DB::select("SELECT * FROM m_users ORDER BY m_users.created_at DESC");
+        return (response()->json(['data' => $result]));
+    }
+
+    public function getUserLimit()
+    {
+        $result = DB::select("SELECT * FROM m_users ORDER BY m_users.created_at DESC LIMIT 0,10");
         return (response()->json(['data' => $result]));
     }
 
     public function searchUser(Request $request)
     {
-        $result = DB::select("SELECT * FROM m_users WHERE fullname LIKE '%" . $request->value . "%' OR 
-        phone LIKE '%" . $request->value . "%' OR email LIKE '%" . $request->value . "%' ");
+        $result = DB::select("SELECT * FROM m_users WHERE (m_users.fullname LIKE '%" . $request->value . "%' OR 
+        m_users.phone LIKE '%" . $request->value . "%' OR m_users.email LIKE '%" . $request->value . "%') " .
+            ($request->status !== null ? ' AND m_users.status = ' . $request->status : '') . " ORDER BY m_users.created_at DESC");
         return response()->json(['data' => $result]);
     }
 
